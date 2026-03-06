@@ -1,0 +1,10 @@
+docs/
+build/
+*.egg-info/
+
+*.pyc
+*.swp
+*.sh
+*qqqq*
+
+

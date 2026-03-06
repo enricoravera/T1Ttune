@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "t1ttune"
+version = "0.0.1"
+description = "  "
+requires-python = ">=3.9"
+
+[project.scripts]
+# Questo crea il comando `M` nel PATH dopo `pip install`
+t1ttune = "t1ttune.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["t1ttune*"]
