@@ -381,9 +381,9 @@ class Conf_Optns:
         self.T = 298.15
         if parser.T:
             self.T = float(parser.T)
-        if hasattr(parser, 'tau'):
+        if hasattr(parser, 'tau') and parser.tau is not None:
             self.tau = [float(t)*1e-9 for t in parser.tau]
-        if parser.MW:
+        if hasattr(parser, 'MW') and parser.MW is not None:
             self.MW = float(parser.MW)
             if not hasattr(self, 'tau'):
                 self.tau = [(self.MW * 0.5998 + 0.1674) * 1e-9]
