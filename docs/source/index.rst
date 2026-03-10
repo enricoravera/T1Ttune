@@ -5,5 +5,6 @@ T1Ttune documentation
    :maxdepth: 2
    :caption: Contents:
 
+   installation
    docmodules
 
