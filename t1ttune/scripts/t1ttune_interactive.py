@@ -36,6 +36,8 @@ class InteractiveCmd(BaseCommand):
         parser.add_argument('--Deltasigma', type=float, default=-160, help='The chemical shift anisotropy of the 15N nucleus in ppm. Default is -160 ppm.')
         parser.add_argument('--theta', type=float, default=17, help='The angle between the 1H-15N bond and the principal axis of the CSA tensor in degrees. Default is 17 degrees.')
         parser.add_argument('--B0', nargs='*', help='The magnetic field strength in Tesla. If not provided, the script will try to load it from the config file. If it is not found in the config file, an error will be raised.')
+        parser.add_argument('--Larmor', type=float, help='The Larmor frequency of the nucleus in MHz. If not provided, the script will try to load it from the config file. If it is not found in the config file, an error will be raised.')
+        parser.add_argument('--logscale', action='store_true', help='Whether to use a logarithmic scale for the vdlist and vclist. Default is False, which means a linear scale will be used.')
         parser.add_argument('--nucs', nargs='*', default=['1H', '15N'], help='The nuclei to use for the calculation of the relaxation rates. Default is 1H and 15N.')
         parser.add_argument('--large', action='store_true', help='Whether to create the lists for the "large" sequence, which is optimized for short T2 times. If True, the d21 value is set to 450 us and only 8 cycles per CPMG block are used instead of 16. Default is False.')
         parser.add_argument('--small', action='store_true', help='Whether to create the lists for the ".idp" sequence, which is optimized for long T2 times. If True, the d21 value is set to 600 us. Default is False.')
@@ -66,7 +68,10 @@ def interactive_setup(CO):
     CO.add_ref('ferrage')
     CO.add_ref('Fiorucci')
     CO.add_ref('klassez')    
-    if CO.hasattr('tau') and CO.tau is not None:
+
+    CO.get_B0(config_p=t1ttune_utils.load_config())
+
+    if hasattr(CO, 'tau') and CO.tau is not None:
         CO.add_ref('fushman')
         R1, R2, nOe = fun_hetrelax_models.R1R2nOe(CO.B_0, r=CO.r, nuc1=CO.nucs[0], nuc2=CO.nucs[1], Deltasigma=CO.Deltasigma, func=fun_hetrelax_models.LS_iso, f_args=(CO.S2, CO.tau))
         print(textcolor('Based on the provided parameters, the estimated R1 is {:.2f} s^-1 and R2 is {:.2f} s^-1.'.format(R1, R2), 'green'))
@@ -75,13 +80,7 @@ def interactive_setup(CO):
     else:
         T1_30 = 0.5
         T2_30 = 0.065
-    if CO.basedir is None:
-        print('\nFrom now on you need to run this script on the spectrometer, as it will need to access the acquisition parameters to suggest the lists for the experiment.')
-        info = f_findfs.find_topspin()
-        if not info['found'] or not info['spectrometer']:
-            t1ttune_utils.the_end(CO) 
-            raise RuntimeError('TopSpin spectrometer installation not found. Please make sure you are running this script on the spectrometer and that TopSpin is properly installed.')
-        CO.basedir = input('Please enter the base directory for the experiment (default is current directory): ') or '.'
+
     if hasattr(CO, 'xred'):
         if len(CO.xred) == 1:
             CO.T1red = CO.T2red = CO.xred[0]*0.01
@@ -99,6 +98,16 @@ def interactive_setup(CO):
         nT2 = nT1
     else:
         nT2 = CO.nT[1]
+    
+    if CO.basedir is None:
+        print('\nFrom now on you need to run this script on the spectrometer, as it will need to access the acquisition parameters to suggest the lists for the experiment.')
+        info = f_findfs.find_topspin()
+        if not info['found'] or not info['spectrometer']:
+            textcolor('TopSpin spectrometer installation not found. Please make sure you are running this script on the spectrometer and that TopSpin is properly installed.', 'red', bold=True)
+            t1ttune_utils.the_end(CO) 
+        CO.basedir = input('Please enter the base directory for the experiment (default is current directory): ') or '.'
+    
+        
     print('\nStarting the interactive setup of the T1 experiment...')
     print('Acquire the reference spectrum first with d7 = 20u.')
     refno = input('Please enter the reference spectrum number (default is 1): ') or '1'
