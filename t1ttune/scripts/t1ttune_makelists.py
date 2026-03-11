@@ -35,6 +35,7 @@ class MakeListsCmd(BaseCommand):
         parser.add_argument('--Deltasigma', type=float, default=-160, help='The chemical shift anisotropy of the 15N nucleus in ppm. Default is -160 ppm.')
         parser.add_argument('--theta', type=float, default=17, help='The angle between the 1H-15N bond and the principal axis of the CSA tensor in degrees. Default is 17 degrees.')
         parser.add_argument('--B0', nargs='*', type=float, help='The magnetic field strength in Tesla. If not provided, the script will try to load it from the config file. If it is not found in the config file, an error will be raised.')
+        parser.add_argument('--Larmor', nargs=1, type=float, help='The Larmor frequency in MHz, alternative to --B0.')
         parser.add_argument('--nucs', nargs='*', default=['1H', '15N'], help='The nuclei to use for the calculation of the relaxation rates. Default is 1H and 15N.')
         parser.add_argument('--logscale', action='store_true', help='Whether to create the lists in logarithmic scale. If True, the protocol suggested by F. Ferrage is used. Default is False.')
         parser.add_argument('--large', action='store_true', help='Whether to create the lists for the "large" sequence, which is optimized for short T2 times. If True, the d21 value is set to 450 us and only 8 cycles per CPMG block are used instead of 16. Default is False.')
@@ -52,6 +53,7 @@ class MakeListsCmd(BaseCommand):
         print(textcolor(f'Set the recovery delay for the hetnOe experiment to at least {6/R1:.3f}.\n', 'blue', bold=False))       
         create_lists(CO, R1, R2)
         t1ttune_utils.the_end(CO)
+        exit()
         
 def create_lists(CO, R1, R2):
     """

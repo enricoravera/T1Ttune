@@ -498,17 +498,36 @@ class Conf_Optns:
             if not hasattr(self, 'xred'):
                 print('No value provided for the xred parameter. Defaulting to [0.1, 0.3, 0.7].')
                 self.xred = [0.1, 0.3, 0.7]
+            else:
+                if len(self.xred) == 1:
+                    self.xred = [self.xred[0], self.xred[0], 0.7]
+                elif len(self.xred) == 2:
+                    self.xred = [self.xred[0], self.xred[1], 0.7]
+                else:
+                    pass
             if parser.lw is not None:
                 self.lw = parser.lw
             if parser.nres is not None:
                 self.nres = parser.nres
-        if self.module!='tract':
+        if self.module in ['makelists', 'interactive']:
+            if not hasattr(self, 'xred'):
+                print('No value provided for the xred parameter. Defaulting to [10, 30].')
+                self.xred = [10, 30]
+            else:
+                if len(self.xred) == 1:
+                    self.xred = [self.xred[0], self.xred[0]]
+                elif len(self.xred) >= 3:
+                    self.xred = [self.xred[0], self.xred[1]]
+                else:
+                    pass
+        if self.module not in ['tract', 'interactive']:
             if hasattr(parser, 'B0') and parser.B0 is not None:
                 if len(parser.B0) == 1:
                     self.B_0 = float(parser.B0[0])
-            
                 else:
                     raise NotImplementedError('Multiple values for B0 are not supported yet. Please provide one value for the magnetic field strength to be used in the calculations.')
+            elif hasattr(parser, 'Larmor') and parser.Larmor is not None:
+                self.B_0 = float(parser.Larmor[0]) / (42.57747892) # convert from MHz to Tesla using the gyromagnetic ratio of the first nucleus in the list
             else:
                 self.get_B0(config_p=load_config())
         

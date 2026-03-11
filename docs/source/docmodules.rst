@@ -3,6 +3,7 @@
 
    t1ttune_configure 
    t1ttune_makelists
+   t1ttune_interactive
    t1ttune_ns
    t1ttune_setuptract
    t1ttune_tract
