@@ -376,7 +376,8 @@ def OuterSphere(B, c=1, d=3.6e-10, D_target = 1e-10, D_cosolute = 2.6e-10, f=0.5
     Calculate the outer sphere relaxation rates R1 and R2 using the Freed model, with optional transient zero-field splitting (ZFS) contributions.
     Default values are for 1 mM Gd-DOTA and a protein of 10 kDa at room temperature. Values for Gd-DOTA are taken from `Li et al. 2002`_.
     
-    .. _Li et al. 2002:https://pubs.acs.org/doi/full/10.1021/ic0200390
+    .. _Li et al. 2002: https://pubs.acs.org/doi/full/10.1021/ic0200390
+    
     
     Parameters
     ----------
