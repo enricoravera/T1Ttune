@@ -6,7 +6,8 @@ import configparser
 import numpy as np
 import klassez as kz
 
-from . import hydrodynamics_utils, f_findfs, textcolor
+from . import hydrodynamics_utils, f_findfs
+from .textcolor import textcolor
 
 
 def config_exists():
