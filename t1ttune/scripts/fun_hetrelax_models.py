@@ -212,11 +212,48 @@ def LS_aniso(w, S2s, taus, D_comp, r_pdb):
         LS += weights[i] * J_omega_tau_iso(w, taus[i])
     return LS
 
+def J_Freed(w, d, D_target, D_cosolute, tau_1=1e-9, tau_2=None):
+    """
+    Freed spectral density function for outer sphere relaxation. Equations 6.42, 6.48 and 6.50 in `Bertini et al. 2016`_.
+ 
+    .. _Bertini et al. 2016: https://www.sciencedirect.com/science/chapter/monograph/pii/B9780444634368000065
+
+    Parameters
+    -----------
+    w: float
+        Larmor frequency in rad/s
+    d: float
+        distance of closest approach of the paramagnetic center and the nucleus in meters
+    D_target: float
+        diffusion coefficient of the target molecule in m^2/s
+    D_cosolute: float
+        diffusion coefficient of the cosolute in m^2/s
+    tau_1: float
+        longitudinal correlation time of the electron in seconds
+    tau_2: float or None
+        transverse correlation time of the electron in seconds (default None, will be set to tau_1 if not provided)
+
+    Returns
+    --------
+    J: float
+        spectral density
+    """
+ 
+    tau_D = d**2 / (D_target + D_cosolute) # equation 6.42
+    if tau_2 is None:
+        tau_2 = tau_1
+    z = np.sqrt(2 * np.abs(w) * tau_D + tau_D / tau_1) # equation 6.50
+    
+    J = (2/5) * (1 + 5 * z / 8 + z**2 / 8) / (1 + z + z**2 / 2 + z**3 / 6 + 4 * z**4 / 81 + z**5 / 81 + z**6 / 648)  #equation 6.48
+
+    return J
+
 def J(J_func, w, f_args):
     """
     General function to calculate the spectral density J using a given J_func. Supports:
     - Isotropic Lipari-Szabo: J_func = :func:`LS_iso`, f_args = (S2s, taus)
     - Anisotropic Lipari-Szabo: J_func = :func:`LS_aniso`, f_args = (S2s, taus, D_comp, r_pdb)
+    - Freed outer sphere: J_func = :func:`J_Freed`, f_args = (d, D_target, D_cosolute, tau_1, tau_2)
         
     Parameters:
     -----------
@@ -224,14 +261,17 @@ def J(J_func, w, f_args):
         spectral density function to use (:func:`LS_iso` or :func:`LS_aniso`)
     w: float
         Larmor frequency in rad/s
-    f_args: list
+    f_args: list or dict
         arguments for the J_func
     
-    Returns:
+    Returns
     --------
     J: float
         spectral density
     """
+    if isinstance(f_args, dict):
+        return J_func(w, **f_args)
+
     return J_func(w, *f_args)
 
 # H-X relaxation terms R1, R2, NOE. everything defaults to NH. 

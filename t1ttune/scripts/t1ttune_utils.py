@@ -178,9 +178,6 @@ def splashscreen(module = None):
     None
     """
     
-
-    
-    
     print('\n' + '*' * (50))
     print('*' + ' ' * (48) + '*')
     print('*' + ' ' * ((48 - 12) // 2) + 'T-one-T-tune' + ' ' * ((48 - 12) // 2) + '*')
@@ -192,14 +189,56 @@ def splashscreen(module = None):
             print('*' + ' ' * ((48 - length) // 2) + f'{module} module' + ' ' * ((48 - length) // 2) + '*')
         else:
             print('*' + ' ' * ((48 - length) // 2) + f'{module} module' + ' ' * ((48 - length) // 2 + 1) + '*')
+    mainauthor = 'Main Author: '
+    er = 'Enrico Ravera'
+    dicus = 'Dipartimento di Chimica "Ugo Schiff"'
+    cirmmp1 = 'Consorzio Interuniversitario' 
+    cirmmp2 = 'Risonanze Magnetiche di Metalloproteine' 
+    unifi = 'University of Florence'
+    contributors = 'Contributors: '
+    fb = 'Francesco Bruno'
+    lf = 'Letizia Fiorucci'
     print('*' + ' ' * (48) + '*')
     print('**************************************************')
-    print('* Authors:                                       *')
-    print('*     Enrico Ravera, University of Florence      *')
-    print('*     Francesco Bruno, University of Florence    *')
-    print('*     Letizia Fiorucci, MPI KoFo                 *')            
+    print_divider(str_toformat=mainauthor)
+    print('*' + ' ' * (48) + '*')
+    print_divider(str_toformat=er)
+    print('*' + ' ' * (48) + '*')
+    print_divider(str_toformat=dicus)
+    print_divider(str_toformat=unifi)
+    print('*' + ' ' * (48) + '*')
+    print_divider(str_toformat='&')
+    print('*' + ' ' * (48) + '*')
+    print_divider(str_toformat=cirmmp1)
+    print_divider(str_toformat=cirmmp2)
+    print('*' + ' ' * (48) + '*')
+    print_divider(str_toformat=contributors)
+    print_divider(str_toformat=fb)
+    print('*' + ' ' * (48) + '*')
+    print_divider(str_toformat=lf)
     print('**************************************************\n')
 
+def print_divider(length=48, str_toformat=''):
+    """
+    Print a divider with the name of the section in the middle. The divider is made of asterisks and the name of the section is centered in the middle of the divider.
+
+    Parameters
+    ----------
+    length : int, optional
+        The total length of the divider, including the name of the section. Default is 48.
+    str_toformat : str
+        The string to be formatted and displayed in the middle of the divider.
+
+    Returns
+    -------
+    None
+        The function prints the divider with the name of the section in the middle.
+    """
+    isdivisible = (length - len(str_toformat)) % 2 == 0
+    if isdivisible:
+        print('*' + ' ' * ((length - len(str_toformat)) // 2) + f'{str_toformat}' + ' ' * ((length - len(str_toformat)) // 2) + '*')
+    else:
+        print('*' + ' ' * ((length - len(str_toformat)) // 2) + f'{str_toformat}' + ' ' * ((length - len(str_toformat)) // 2 + 1) + '*')
 def the_end(CO):
     """
     Display the references for the methods used in this software.
@@ -236,6 +275,8 @@ class Conf_Optns:
                     'salvi' : ['Salvi, N., Abyzov, A., Blackledge, M. (2017). Atomic resolution conformational dynamics of intrinsically disordered proteins from NMR spin relaxation. Progress in Nuclear Magnetic Resonance Spectroscopy, 102-103, 43-60.', '10.1016/j.pnmrs.2017.06.001'],
                     'parigi2000' : ['Bertini, I., Fragai, M., Luchinat, C., & Parigi, G. (2000). 1H NMRD profiles of diamagnetic proteins: a model‐free analysis. Magnetic Resonance in Chemistry, 38(7), 543-550.', '10.1002/1097-458X(200007)38:7<543::AID-MRC722>3.0.CO;2-%23'],
                     'klassez': ['Bruno, F. (2025). Automatized quantitative NMR for industrial applications. Doctoral Thesis, University of Florence', 'None'],
+                    'bertini': ['Bertini, I., Luchinat, C., Parigi, G., & Ravera, E. (2016). NMR of paramagnetic molecules: applications to metallobiomolecules and models (Vol. 2).', '10.1016/B978-0-444-63436-8.00022-3'],
+                    'suturina': ['Suturina, E. A., Mason, K., Geraldes, C. F., Chilton, N. F., Parker, D., & Kuprov, I. (2018). Lanthanide-induced relaxation anisotropy. Physical Chemistry Chemical Physics, 20(26), 17676-17686', '10.1039/C8CP01332B'],
                      }
     def __init__(self, parser, module='makelists'):
         """
@@ -377,11 +418,11 @@ class Conf_Optns:
             if parser.corr_window_idp:
                 self.MWi = float(parser.corr_window_idp) * 0.110
         else:
-            if parser.S2:
+            if hasattr(parser, 'S2') and parser.S2 is not None:
                 self.S2[0] = float(parser.S2[0])
                 
         self.T = 298.15
-        if parser.T:
+        if hasattr(parser, 'T') and parser.T is not None:
             self.T = float(parser.T)
         if hasattr(parser, 'tau') and parser.tau is not None:
             self.tau = [float(t)*1e-9 for t in parser.tau]
@@ -441,7 +482,7 @@ class Conf_Optns:
                         self.nT = [int(parser.nT[0]), int(parser.nT[1])]
                     else:
                         raise ValueError('The --nT option can only accept one or two values, corresponding to the number of T1 and T2 increments to be designed, respectively. Please provide one value to use the same number of increments for both T1 and T2, or two values to specify different numbers for T1 and T2.')
-            elif self.module == 'setupsolventpre':
+            elif self.module == 'solventpre':
                 if parser.nT is None:
                     self.nT = [8, 2]
                 else:    
@@ -453,6 +494,61 @@ class Conf_Optns:
                         raise ValueError('The --nT option can only accept one or two values, corresponding to the number of T1 and T2 increments to be designed, respectively. Please provide one value to use the same number of increments for both T1 and T2, or two values to specify different numbers for T1 and T2.')
             else:
                 raise ValueError('The --nT option is only valid for the setuptract, makelists, and setupsolventpre modules. Please remove it and run the script again.')
+        if self.module == 'solventpre':
+            if hasattr(parser, 'T1') and parser.T1 is not None:
+                self.T1 = float(parser.T1)
+            else:
+                self.T1 = 1 # in seconds            
+                
+            if hasattr(parser, 'c') and parser.c is not None:
+                self.c = float(parser.c)
+            else:
+                self.c = 1
+            if hasattr(parser, 'D') and parser.D is not None:
+                self.D = [float(D) for D in parser.D]
+            else:
+                self.D = [1e-10, 2.6e-10] # in m^2/s, default values for the diffusion coefficients of the solvent and the cosolute, respectively
+            if hasattr(parser, 'access') and parser.access is not None:
+                self.access = float(parser.access)
+            else:
+                self.access = 0.5 # default value for the accessibility of the solvent nucleus to the paramagnetic cosolute
+
+            if hasattr(parser, 'taue') and parser.taue is not None:
+                self.taue = float(parser.taue)
+            else:
+                if hasattr(parser, 'tauv') and parser.tauv is not None:
+                    self.tauv = float(parser.tauv)
+                else:
+                    if hasattr(self, 'taue'):
+                        self.tauv = None
+                    else:
+                        self.tauv = 2.6e-11 # default value for the correlation time for transient ZFS fluctuations in seconds
+                if hasattr(parser, 'deltat') and parser.deltat is not None:
+                    self.deltat = float(parser.deltat)
+                else:
+                    self.deltat = 0.014
+                if hasattr(parser, 'AMe') and parser.AMe is not None:
+                    self.AMe = float(parser.AMe)
+                else:
+                    self.AMe = None # in Hz, default value for the hyperfine coupling constant between the electron spin and the solvent nucleus
+                if self.AMe is not None:
+                    if hasattr(parser, 'I') and parser.I is not None:
+                        self.I = float(parser.I)
+                    else:
+                        raise ValueError('The I parameter, corresponding to the spin of the paramagnetic cosolute, must be provided if the AMe parameter is provided. Please provide it using the --I argument and run the script again.')
+                if hasattr(parser, 'I') and parser.I is not None:
+                    self.I = float(parser.I)
+                else:
+                    self.I = None
+                if hasattr(parser, 'g') and parser.g is not None:
+                    self.g = float(parser.g)
+                else:
+                    self.g = None
+                if hasattr(parser, 'S') and parser.S is not None:
+                    self.S = float(parser.S)
+                else:
+                    self.S = 3.5
+        
         if self.options['smoothdata']: 
             if not hasattr(parser, 'slw') or not parser.slw:
                 self.slw = 5 # default value for the percentage of the spectrum to use for the sliding window smoothing
@@ -463,20 +559,25 @@ class Conf_Optns:
                 self.slw = 5 # default value for the percentage of the spectrum to use for the sliding window smoothing
             else:
                 self.slw = parser.slw[0]
-        if parser.nucs is not None:
+        if hasattr(parser, 'nucs') and parser.nucs is not None:
             self.nucs = parser.nucs
+        elif self.module == 'solventpre':
+            self.nucs = ['1H']
         else:
             self.nucs = ['1H', '15N']
-        if parser.r is not None:
+        if hasattr(parser, 'r') and parser.r is not None:
             self.r = float(parser.r)*1e-10
         else:
-            if '1H' in self.nucs and '15N' in self.nucs:
-                self.r = 1.02e-10 # in meters, default value for the distance between the 1H and 15N nuclei in a protein amide group
-            elif '1H' in self.nucs and '13C' in self.nucs:
-                self.r = 1.23e-10 # in meters, default value for the distance between the 1H and 13C nuclei in a protein alpha carbon 
+            if self.module == 'solventpre':
+                self.r = 3.6e-10 # in meters, default value for the distance between the solvent nucleus and the paramagnetic cosolute
             else:
-                raise ValueError('Unsupported combination of nuclei. Please provide the r to be used.')
-        if parser.Deltasigma is not None:
+                if '1H' in self.nucs and '15N' in self.nucs:
+                    self.r = 1.02e-10 # in meters, default value for the distance between the 1H and 15N nuclei in a protein amide group
+                elif '1H' in self.nucs and '13C' in self.nucs:
+                    self.r = 1.23e-10 # in meters, default value for the distance between the 1H and 13C nuclei in a protein alpha carbon 
+                else:
+                    raise ValueError('Unsupported combination of nuclei. Please provide the r to be used.')
+        if hasattr(parser, 'Deltasigma') and parser.Deltasigma is not None:
             self.Deltasigma = float(parser.Deltasigma)
         else:
             if '15N' in self.nucs and '1H' in self.nucs:
@@ -484,8 +585,9 @@ class Conf_Optns:
             elif '13C' in self.nucs and '1H' in self.nucs:
                 self.Deltasigma = 60 # default value for the chemical shift anisotropy of the 13C nucleus in a protein alpha carbon
             else:
-                raise ValueError('Unsupported combination of nuclei. Please provide the Deltasigma to be used.')
-        if parser.theta is not None:
+                if self.module != 'solventpre':
+                    raise ValueError('Unsupported combination of nuclei. Please provide the Deltasigma to be used.')
+        if hasattr(parser, 'theta') and parser.theta is not None:
             self.theta = float(parser.theta) * np.pi / 180 # convert from degrees to radians
         else:
             if '15N' in self.nucs and '1H' in self.nucs:
@@ -493,7 +595,8 @@ class Conf_Optns:
             elif '13C' in self.nucs and '1H' in self.nucs:
                 self.theta = 109 * np.pi / 180 # in radians, default value for the angle between the C-H bond and the principal axis of the chemical shift tensor of the 13C nucleus in a protein alpha carbon 109°
             else:
-                raise ValueError('Unsupported combination of nuclei. Please provide the theta to be used.')
+                if self.module != 'solventpre':
+                    raise ValueError('Unsupported combination of nuclei. Please provide the theta to be used.')
         if hasattr(parser, 'xred') and parser.xred is not None:
             self.xred = [float(x) for x in parser.xred]
         if self.module=='NS':
@@ -507,9 +610,9 @@ class Conf_Optns:
                     self.xred = [self.xred[0], self.xred[1], 0.7]
                 else:
                     pass
-            if parser.lw is not None:
+            if hasattr(parser, 'lw') and parser.lw is not None:
                 self.lw = parser.lw
-            if parser.nres is not None:
+            if hasattr(parser, 'nres') and parser.nres is not None:
                 self.nres = parser.nres
         if self.module in ['makelists', 'interactive']:
             if not hasattr(self, 'xred'):
