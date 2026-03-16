@@ -659,20 +659,27 @@ class Conf_Optns:
             fspath = None
             if self.module == 'interactive':
                 print(textcolor("interactive module should be run on a spectrometer workstation. ", "red"))
-        if fspath is None:
+        if fspath is not None:
+            print(textcolor(f'Spectrometer configuration file found at {fspath}. Attempting to extract the magnetic field value from the uxnmr.info file.', 'green'))
+            if hasattr(self, 'B_0') and self.B_0 is not None:
+                print(textcolor(f'Magnetic field value already provided: B_0={self.B_0} T - Larmor Frequency = {self.B_0 * kz.sim.gamma["1H"]}. Skipping the search for the magnetic field value in the spectrometer configuration file.', 'yellow'))
+                return
+            spect_folder = os.path.join(fspath, "conf", "instr", "spect") # instrument config
+            with open(os.path.join(spect_folder, "uxnmr.info")) as spectfile:
+                spectinfolist = spectfile.readlines()
+                for line in spectinfolist:
+                    if "1H-frequency" in line:
+                        larmor_freq = float(line.split(":")[1].strip(" MHz\n"))
+                        print(textcolor(f'Extracted Larmor frequency: {larmor_freq} MHz', 'green'))
+                        self.B_0 = larmor_freq / kz.sim.gamma["1H"] # in Tesla, calculated from the 1H Larmor frequency
+                        return
+        else:    
             if hasattr(self, 'B_0') and self.B_0 is not None:
                 return
             else:
+                print(textcolor('Not running in spectrometer mode. Please provide it manually.', 'yellow'))
                 self.B_0 = float(input('Please provide the magnetic field value in Tesla: '))        
                 return
-        spect_folder = os.path.join(fspath, "conf", "instr", "spect") # instrument config
-        with open(os.path.join(spect_folder, "uxnmr.info")) as spectfile:
-            spectinfolist = spectfile.readlines()
-            for line in spectinfolist:
-                if "1H-frequency" in line:
-                    larmor_freq = float(line.split(":")[1].strip(" MHz\n"))
-                    break
-        self.B_0 = larmor_freq / kz.sim.gamma["1H"] # in Tesla, calculated from the 1H Larmor frequency
         return
     
     def get_experiment(self, parser, config_p=None):
