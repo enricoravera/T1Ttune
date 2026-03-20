@@ -4,9 +4,32 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "t1ttune"
-version = "0.0.1a"
+version = "0.0.2.dev0"
 description = ""
 requires-python = ">=3.10"
+dependencies = [
+    'klassez>=0.1.0',
+    'numpy',
+    'scipy',
+    'lmfit',
+    'numdifftools',
+    'seaborn',
+    'nmrglue',
+    'matplotlib>=3.8',
+    'csaps',
+]
+
+[project.urls]
+Homepage = 'https://github.com/enricoravera/t1ttune'
+Repository = 'https://github.com/enricoravera/t1ttune.git'
+Documentation = 'https://t1ttune.readthedocs.io'
+
+[tool.setuptools.packages.find]
+where = ['.']
+include = ['t1ttune*']
+
+[tool.setuptools.package-data]
+t1ttune = ['*.txt', '*.md', '*.yaml']
 
 [project.readme]
 file = "README.md"
@@ -16,6 +39,3 @@ content-type = "text/markdown"
 # Questo crea il comando `M` nel PATH dopo `pip install`
 t1ttune = "t1ttune.cli:main"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["t1ttune*"]
