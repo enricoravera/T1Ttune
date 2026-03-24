@@ -112,8 +112,8 @@ def suggest_tract_vdlist(CO):
     print(f'Rb:  {Rb:.2f} s^-1')
 
 
-    t_a = 0.5 * Ra
-    t_b = 0.5 * Rb
+    t_a = 0.5 / Ra
+    t_b = 0.5 / Rb
     
     # Time range
     t_min = 2e-5
