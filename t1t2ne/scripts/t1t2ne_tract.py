@@ -361,6 +361,7 @@ def tract_fit_Ra_Rb(CO):
 
         # Remove digital filter
         s.pknl()
+
         # Phase the spectrum
         if phase:
 
@@ -370,6 +371,7 @@ def tract_fit_Ra_Rb(CO):
                 s.adjph(p0=Sa.procs['p0'], p1=Sa.procs['p1'], pv=Sa.procs['pv'], update=False)
         # Qfil the solvent peak
         s.acqus['FnMODE'] = 'No'
+        s.abs_v2()
         if s==Sa:
             s.qfil()
         else:
