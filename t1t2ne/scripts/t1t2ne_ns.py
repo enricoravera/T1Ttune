@@ -22,8 +22,8 @@ class NSCmd(BaseCommand):
     @staticmethod
     def add_arguments(parser):
         parser.add_argument('--basedir', nargs=1, help='Base directory for the experiment (where the reference spectrum is located)')
-        parser.add_argument('--tract', nargs=1, help='expno of the TRACT experiment (used to estimate the SNR). Either this or --hsqc should be provided')
-        parser.add_argument('--hsqc', nargs=1, help='expno of the reference HSQC spectrum (used to estimate the SNR). Either this or --tract should be provided')
+        parser.add_argument('--tract', type=str, help='expno of the TRACT experiment (used to estimate the SNR). Either this or --hsqc should be provided')
+        parser.add_argument('--hsqc', type=str, help='expno of the reference HSQC spectrum (used to estimate the SNR). Either this or --tract should be provided')
         parser.add_argument('--nres', type=int, help='The number of non-proline residues in the protein. If not provided, it will be estimated from the molecular weight.')
         parser.add_argument('--lw', type=float, help='The linewidth of the peaks in the reference spectrum in Hz. If not provided, it will be estimated from the reference spectrum.')
         parser.add_argument('--xred', nargs='*', help='The percent residual signal for the longest delay of the experiment, or NOE efficiency as percentage. Accepts a list, computes the optimal number of scans for each value')
@@ -39,9 +39,7 @@ class NSCmd(BaseCommand):
     @staticmethod
     def run(args: argparse.Namespace) -> None:
         CO = t1t2ne_utils.Conf_Optns(args, module='NS')
-        CO.get_B0(config_p=t1t2ne_utils.load_config())
-        CO.get_experiments(config_p=t1t2ne_utils.load_config())
-        SNR = estimate_snr(args)
+        SNR = estimate_snr(CO)
         suggest_scans(CO, SNR)
         t1t2ne_utils.the_end(CO)
         
@@ -81,23 +79,23 @@ def estimate_snr(CO):
     """
 
 
-    if CO.hasattr('MW'):
+    if hasattr(CO, 'MW') and CO.MW is not None:
         MW = CO.MW
     else:
-        if CO.hasattr('lw'):
+        if hasattr(CO, 'lw') and CO.lw is not None:
             print('No value provided for the molecular weight. Estimating it from the linewidth provided. This is a rough estimate, but it should be sufficient for our purposes.')
             MW = (CO.lw*np.pi/7.42 - 0.1674)/0.5998
             CO.add_ref('bermel')
             CO.add_ref('cavanagh')
-        elif CO.hasattr('nres'):
+        elif hasattr(CO, 'nres') and CO.nres is not None:
             MW = CO.nres*0.110/0.937 #average mass of an amino acid is 110 Da, and we multiply by 0.937 to account for the fact that prolines do not have an amide proton and therefore do not contribute to the signal in the HSQC spectrum. This is a rough estimate, but it should be sufficient for our purposes.
-        elif CO.hasattr('tau'):
+        elif hasattr(CO, 'tau') and CO.tau is not None:
             CO.add_ref('cavanagh')
             MW = (hydrodynamics_utils.tau(CO.tau[0]*1e9, 298.15, T_old=CO.T)- 0.1674)/0.5998
         else:   
             raise ValueError('No value provided for the molecular weight or linewidth. Cannot estimate molecular weight.')
     
-    if CO.hasattr('nres'):
+    if hasattr(CO, 'nres') and CO.nres is not None:
         nres = CO.nres
     else:
         nres = np.rint(MW/0.110)*(0.937) #average mass of an amino acid is 110 Da, and we multiply by 0.937 to account for the fact that prolines do not have an amide proton and therefore do not contribute to the signal in the HSQC spectrum. This is a rough estimate, but it should be sufficient for our purposes.
@@ -113,7 +111,7 @@ def estimate_snr(CO):
         tau_average = S2_slow*tau_slow + S2_int*tau_int
     else:
         tau_average = CO.tau[0]
-    if CO.lw is None:
+    if not hasattr(CO, 'lw') or CO.lw is None:
         R2H = tau_average*7.42e9 
         CO.add_ref('bermel')
         amidelinewidth = R2H/(np.pi)    
@@ -122,7 +120,7 @@ def estimate_snr(CO):
     amidelinewidth_p = kz.misc.freq2ppm(amidelinewidth, CO.B_0*kz.sim.gamma['1H'])
 
     #estimate signal to noise ratio. if HSQC is provided, use it. Else, use the TRACT
-    if CO.hsqcexpno is not None:
+    if CO.hsqc is not None:
         path_hsqc = os.path.join(CO.basedir, f'{CO.hsqcexpno}')
         S_hsqc = kz.Spectrum_2D(path_hsqc)
         S_hsqc.procs['wf'][-1]['mode'] = 'em'

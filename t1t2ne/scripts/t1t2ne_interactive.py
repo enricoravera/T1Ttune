@@ -156,7 +156,7 @@ def interactive_setup(CO):
         S_t1.process()
         S_t1.pknl()
         S_t1.adjph()
-        S_t1.integrate(filename='t1spec', limits=limits)
+        S_t1.integrate(filename='t1spec', lims=limits)
         tb = S_t1.ngdic['acqus']['D'][31]
         ratio = 0
         for key in S_t1.integrals.keys():
@@ -261,7 +261,7 @@ def interactive_setup(CO):
         S_t2.process()
         S_t2.pknl()
         S_t2.adjph()
-        S_t2.integrate(filename='t2spec', limits=limits)
+        S_t2.integrate(filename='t2spec', lims=limits)
         tb = S_t2.ngdic['acqus']['L'][31]*d31*1e-6
         ratio = 0
         for key in S_t2.integrals.keys():
