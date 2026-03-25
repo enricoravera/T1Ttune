@@ -5,6 +5,8 @@ import socket
 import configparser
 import numpy as np
 import klassez as kz
+from importlib.resources import files, as_file
+from pathlib import Path
 
 from . import hydrodynamics_utils, f_findfs
 from .textcolor import textcolor
@@ -742,9 +744,11 @@ class Conf_Optns:
                 self.tract = None
                 self.hsqc = None
             else:
-                self.basedir = 'tract'
-                self.tract = '36'
-                self.hsqc = '411'
+                example_resource = files('t1t2ne.examples')
+                with as_file(example_resource) as example_path:
+                    self.basedir = example_path
+                self.tract = '4'
+                self.hsqc = '11'
                 print(f'Experiment parameters set for internal test environment: basedir={self.basedir}, tract={self.tract}, hsqc={self.hsqc}')
         else:
             if hasattr(self, 'MW') and self.MW is not None:

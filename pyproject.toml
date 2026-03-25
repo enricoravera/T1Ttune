@@ -29,7 +29,7 @@ where = ['.']
 include = ['t1t2ne*']
 
 [tool.setuptools.package-data]
-t1ttune = ['*.txt', '*.md', '*.yaml']
+t1ttune = ['*.txt', '*.md', '*.yaml', 'examples/**']
 
 [project.readme]
 file = "README.md"
