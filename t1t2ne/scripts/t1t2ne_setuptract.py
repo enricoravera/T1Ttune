@@ -8,6 +8,7 @@ from .textcolor import textcolor
 from . import t1t2ne_utils, fun_hetrelax_models
 import random
 from scipy.optimize import differential_evolution
+from scipy.special import lambertw
 
 class SetupTractCmd(BaseCommand):
     SHORT_HELP = "Setup the vdlist for a TRACT experiment"
@@ -111,9 +112,10 @@ def suggest_tract_vdlist(CO):
     print(f'Ra:  {Ra:.2f} s^-1')
     print(f'Rb:  {Rb:.2f} s^-1')
 
+    factor = 1 + lambertw(1/np.e)
 
-    t_a = 0.5 / Ra
-    t_b = 0.5 / Rb
+    t_a = factor / Ra
+    t_b = factor / Rb
     
     # Time range
     t_min = 2e-5

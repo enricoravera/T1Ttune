@@ -8,6 +8,7 @@ from .textcolor import textcolor
 import klassez as kz
 from . import t1t2ne_utils, fun_hetrelax_models, f_findfs
 import random
+from scipy.special import lambertw
 
 class InteractiveCmd(BaseCommand):
     SHORT_HELP = "Interactive setup of the experiment"
@@ -70,13 +71,15 @@ def interactive_setup(CO):
     CO.add_ref('klassez')    
 
     CO.get_B0()
+    
+    expectedratio = np.exp(-(1+lambertw(1/np.e))) # maximum reduction achievable with the optimal CPMG block, which is 1+lambertw(1/e) times the T2 time of the system
 
     if hasattr(CO, 'tau') and CO.tau is not None:
         CO.add_ref('fushman')
         R1, R2, nOe = fun_hetrelax_models.R1R2nOe(CO.B_0, r=CO.r, nuc1=CO.nucs[0], nuc2=CO.nucs[1], Deltasigma=CO.Deltasigma, func=fun_hetrelax_models.LS_iso, f_args=(CO.S2, CO.tau))
         print(textcolor('Based on the provided parameters, the estimated R1 is {:.2f} s^-1 and R2 is {:.2f} s^-1.'.format(R1, R2), 'green'))
-        T1_30 = -np.log(0.3)/R1
-        T2_30 = -np.log(0.3)/R2
+        T1_30 = -np.log(expectedratio)/R1
+        T2_30 = -np.log(expectedratio)/R2
     else:
         T1_30 = 0.5
         T2_30 = 0.065
@@ -138,7 +141,7 @@ def interactive_setup(CO):
     whilecontrol = True
     iteration = 0
     while whilecontrol:
-        print(textcolor(f'To achieve a reduction of the signal intensity of about 30%, try setting d31 to ' + t1t2ne_utils.f4(T1_30), 'blue'))
+        print(textcolor(f'To achieve a reduction of the signal intensity of about {expectedratio*100:.0f}%, try setting d31 to ' + t1t2ne_utils.f4(T1_30), 'blue'))
         expno = input('Please enter the experiment number for the T1 experiment once it is done (default is 2): ') or '2'
         path_t1 = os.path.join(CO.basedir, expno)
         if not os.path.exists(path_t1):
@@ -160,7 +163,7 @@ def interactive_setup(CO):
             ratio += S_t1.integrals[key] / S_ref.integrals[key] * (1/len(S_t1.integrals.keys()))
         R1_ave = -np.log(ratio) / (tb-ta)
         print(f'Iteration {iteration}: Estimated R1 from the reference ({ta*1e6:.2f} u) and T1 spectra ({tb:.3f} s) with a ratio of {ratio:.2f}: {R1_ave:.2f} s^-1')
-        T1_30_est = -np.log(0.3)/R1_ave
+        T1_30_est = -np.log(expectedratio)/R1_ave
         if abs(T1_30_est - T1_30) / T1_30 > 0.1:
             T1_30 = T1_30_est
         else:
@@ -265,12 +268,12 @@ def interactive_setup(CO):
             ratio += S_t2.integrals[key] / S_ref.integrals[key] * (1/len(S_t2.integrals.keys()))
         R2_ave = -np.log(ratio) / (tb-ta)
         print(f'Iteration {iteration}: Estimated R2 from the reference ({ta*1e6:.2f} us) and T2 ({tb*1e3:.2f} ms), with ratio of {ratio:.3f}: {R2_ave:.2f} s^-1')
-        l1_30_est = int((-np.log(0.3)/R2_ave)/(d31*1e-6))
+        l1_30_est = int((-np.log(expectedratio)/R2_ave)/(d31*1e-6))
         if l1_30_est == 0:
             l1_30_est = 1
         if l1_30_est >= l31_hl:
             l1_30_est = l31_hl
-        if l1_30_est != l1_30:
+        if np.abs(l1_30_est - l1_30) > 1:
             l1_30 = l1_30_est
         else:
             whilecontrol = False
