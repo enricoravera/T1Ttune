@@ -1,11 +1,13 @@
 #! /usr/bin/env python3
 
+from unittest import result
 import numpy as np
 
 from .base import BaseCommand
 from .textcolor import textcolor
 from . import t1t2ne_utils, fun_hetrelax_models
 import random
+from scipy.optimize import differential_evolution
 
 class SetupTractCmd(BaseCommand):
     SHORT_HELP = "Setup the vdlist for a TRACT experiment"
@@ -44,6 +46,23 @@ class SetupTractCmd(BaseCommand):
         suggest_tract_vdlist(CO)
         t1t2ne_utils.the_end(CO)    
         exit()        
+        
+
+
+
+def d_optimal_criterion(t, lam1, lam2):
+    """Returns -log det(FIM); minimize this."""
+    t = np.asarray(t)
+    F11 = np.sum(t**2 * np.exp(-2 * lam1 * t))
+    F22 = np.sum(t**2 * np.exp(-2 * lam2 * t))
+    F12 = np.sum(t**2 * np.exp(-(lam1 + lam2) * t))
+    return -(F11 * F22 - F12**2)          # negative det (we minimise)
+
+
+def decode(u, t_max, n, min_gap):
+    """Map unconstrained u in [0,1]^n to sorted times with min_gap enforced."""
+    gaps = min_gap + u * (t_max - n * min_gap) / n  # each gap >= min_gap
+    return np.cumsum(gaps)
 
 def suggest_tract_vdlist(CO):
     r"""
@@ -77,12 +96,47 @@ def suggest_tract_vdlist(CO):
     if CO.options['idp']:
         CO.add_ref('rezaei-ghaleh')
     CO.add_ref('fushman')
+    print(textcolor('\nCalculating the optimal vdlist for the TRACT experiment...', 'blue'))
     R1, R2, nOe = fun_hetrelax_models.R1R2nOe(CO.B_0, r=CO.r, nuc1=CO.nucs[0], nuc2=CO.nucs[1], Deltasigma=CO.Deltasigma, func=fun_hetrelax_models.LS_iso, f_args=(CO.S2, CO.tau))
     CO.add_ref('salvi')
     eta_z, eta_xy = fun_hetrelax_models.eta_z_eta_xy(CO.B_0, r=CO.r, nuc1=CO.nucs[0], nuc2=CO.nucs[1], Deltasigma=CO.Deltasigma, theta=CO.theta, func=fun_hetrelax_models.LS_iso, f_args=(CO.S2, CO.tau))
     Rb = R2 + eta_xy
     Ra = R2 - eta_xy
-    vdlist_TRACT = np.geomspace(2e-5, 2/Rb, num=nT) #geometrically spaced list from 20us to 2*tau_average
+    print(textcolor('\nProvided parameters:', 'blue'))
+    print(f'Correlation time(s): {CO.tau} s')
+    print(f'Order parameter(s) S2: {CO.S2}')
+
+    print(textcolor('\nEstimated relaxation rates:', 'blue'))
+    print(f'R1:  {R1:.2f} s^-1, R2: {R2:.2f} s^-1, nOe: {nOe:.2f}')
+    print(f'Ra:  {Ra:.2f} s^-1')
+    print(f'Rb:  {Rb:.2f} s^-1')
+
+
+    t_a = 0.5 / Ra
+    t_b = 0.5 / Rb
+    
+    # Time range
+    t_min = 2e-5
+    t_max = 2 * max(t_a, t_b)
+    
+    # Logarithmically spaced grid (covers both fast and slow scales)
+    log_times = np.logspace(np.log10(t_min), np.log10(t_max), nT)
+    
+    # Force the two exact optimal points into the grid
+    # (this guarantees the schedule "touches" the FIM-optimal locations)
+    idx_a = np.argmin(np.abs(log_times - t_a))
+    idx_b = np.argmin(np.abs(log_times - t_b))
+    
+    # Avoid overwriting the same index if t_a ≈ t_b
+    if idx_a == idx_b:
+        idx_b = (idx_b + 1) % nT
+    
+    log_times[idx_a] = t_a
+    log_times[idx_b] = t_b
+    
+    # Return sorted distinct times
+    vdlist_TRACT = np.sort(log_times)
+    
     vdlist_TRACT /= 2
     if CO.options['randomize']:
         random.shuffle(vdlist_TRACT)

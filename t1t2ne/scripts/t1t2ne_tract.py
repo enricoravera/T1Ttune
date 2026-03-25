@@ -135,7 +135,7 @@ def make_plot(CO, xaxis, y_rec, yerr_rec, y_ave, yerr_ave, Ra, Rb, sigma_Ra, sig
         ax.set_yscale('log')
     else:
         ax.set_ylabel(r'$S^2$ estimate')        
-    ax.text(0.05, 0.95, f'expected $T_1$ = {1/R1:.2f} s\nexpected $T_2$ = {1/R2:.2f} s\nexpected hetnOe = {nOe:.2f}\nexpected $\eta_z$ = {eta_z:.2f}\nexpected $\eta_{{xy}}$ = {eta_xy:.2f}', transform=ax.transAxes, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+    ax.text(0.05, 0.95, f'expected $T_1$ = {1/R1:.2f} s\nexpected $T_2$ = {1/R2:.2f} s\nexpected hetnOe = {nOe:.2f}\nexpected $\\eta_z$ = {eta_z:.2f}\nexpected $\\eta_{{xy}}$ = {eta_xy:.2f}', transform=ax.transAxes, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
 
     kz.misc.pretty_scale(axr, (0, R2+4*np.abs(eta_xy)), 'y')
     axr.set_ylabel('Relaxation rates (Hz)')
@@ -330,7 +330,11 @@ def tract_fit_Ra_Rb(CO):
     CO.B0 = S.acqus['SFO1'] / kz.sim.gamma[CO.nucs[0]]
     print(f'Magnetic field strength: {CO.B0:.2f} T')
     #splitcomb-like operation to separate the two interleaved datasets (TROSY and ANTITROSY)
-    #S.fid = np.reshape(S.fid.flatten(), (2*S.fid.shape[0], -1))
+    version = t1t2ne_utils.fs_version(S)
+    if version == 'topspin4':
+        S.fid = np.reshape(S.fid.flatten(), (2*S.fid.shape[0], -1))
+    else:
+        pass
     Sa = deepcopy(S)
     Sb = deepcopy(S)
     Sb.fid = S.fid[::2]
@@ -357,6 +361,7 @@ def tract_fit_Ra_Rb(CO):
 
         # Remove digital filter
         s.pknl()
+
         # Phase the spectrum
         if phase:
 
@@ -366,6 +371,7 @@ def tract_fit_Ra_Rb(CO):
                 s.adjph(p0=Sa.procs['p0'], p1=Sa.procs['p1'], pv=Sa.procs['pv'], update=False)
         # Qfil the solvent peak
         s.acqus['FnMODE'] = 'No'
+        #s.abs_v2()
         if s==Sa:
             s.qfil()
         else:
@@ -655,4 +661,4 @@ def tract(CO):
         make_plot(CO, xaxis, y, yerr, y_ave, yerr_ave, Ra, Rb, sigma_Ra, sigma_Rb, values, name=name, idx = idx)
     
     print(textcolor('Use this command to create the lists for your system', 'green'))
-    print(f't1t2ne makelists --tau {CO.tau[0]*1e9:.2e} {CO.tau[1]*1e9:.2e} --S2 {CO.S2[0]:.2f} {CO.S2[1]:.2f} --idp' if CO.options['idp'] else f't1t2ne makelist --tau {CO.tau[0]*1e9:.2e} --S2 {CO.S2[0]:.2f}')     
+    print(f't1t2ne makelists --tau {CO.tau[0]*1e9:.2e} {CO.tau[1]*1e9:.2e} --S2 {CO.S2[0]:.2f} {CO.S2[1]:.2f} --idp' if CO.options['idp'] else f't1t2ne makelists --tau {CO.tau[0]*1e9:.2e} --S2 {CO.S2[0]:.2f}')     

@@ -10,6 +10,27 @@ from . import hydrodynamics_utils, f_findfs
 from .textcolor import textcolor
 
 
+def fs_version(S):
+    """
+    Determines the version of TopSpin used to acquire the spectrum S by looking at the '_coreheader' parameter in the acqus dictionary of the spectrum. 
+
+    Parameters
+    ----------
+    S : kz.Pseudo_2D
+        The spectrum for which to determine the TopSpin version.
+
+    Returns
+    -------
+    str
+        The version of TopSpin used to acquire the spectrum if the '_coreheader' parameter is found, otherwise None.
+    """
+    if 'TopSpin 4' in S.ngdic['acqus']['_coreheader'][0]:
+        return 'topspin4'
+    elif 'TopSpin 3' in S.ngdic['acqus']['_coreheader'][0]:
+        return 'topspin3'
+    else:
+        return None
+
 def config_exists():
     """
     Checks if the config file exists in the curdir folder of topspin for any of the users in the nmrsuperuser list. 
@@ -657,7 +678,7 @@ class Conf_Optns:
 
         findfs_info = f_findfs.find_topspin()
         if findfs_info["spectrometer"]:
-            fspath = findfs_info["fspath"]
+            fspath = findfs_info["install_path"]
         else:
             fspath = None
             if self.module == 'interactive':
