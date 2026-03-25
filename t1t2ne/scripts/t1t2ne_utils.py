@@ -744,7 +744,7 @@ class Conf_Optns:
                 self.tract = None
                 self.hsqc = None
             else:
-                example_resource = files('t1t2ne.examples')
+                example_resource = files('t1t2ne') / 'examples'
                 with as_file(example_resource) as example_path:
                     self.basedir = example_path
                 self.tract = '4'
