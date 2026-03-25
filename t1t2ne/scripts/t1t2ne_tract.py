@@ -13,6 +13,7 @@ from matplotlib.widgets import MultiCursor
 
 from .base import BaseCommand
 from . import f_fit, t1t2ne_utils, fun_hetrelax_models
+from .tract_extra import split_tract
 
 class TractCmd(BaseCommand):
     SHORT_HELP = "Fit a TRACT experiment to extract the average tau_c of the system"
@@ -330,17 +331,7 @@ def tract_fit_Ra_Rb(CO):
     CO.B0 = S.acqus['SFO1'] / kz.sim.gamma[CO.nucs[0]]
     print(f'Magnetic field strength: {CO.B0:.2f} T')
     #splitcomb-like operation to separate the two interleaved datasets (TROSY and ANTITROSY)
-    version = t1t2ne_utils.fs_version(S)
-    if version == 'topspin4':
-        S.fid = np.reshape(S.fid.flatten(), (2*S.fid.shape[0], -1))
-    else:
-        pass
-    Sa = deepcopy(S)
-    Sb = deepcopy(S)
-    Sb.fid = S.fid[::2]
-    Sa.fid = S.fid[1::2]
-    Sa.acqus['TD1'] = Sa.fid.shape[0]
-    Sb.acqus['TD1'] = Sb.fid.shape[0]
+    Sa, Sb = split_tract(S)
     if smooth_data or smooth_rates:
         slw_windowlength = int(S.acqus['TD'] * slw[0] / 100)
 

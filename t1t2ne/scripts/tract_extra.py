@@ -2,6 +2,7 @@
 
 import numpy as np
 from copy import deepcopy
+from . import t1t2ne_utils
 
 def split_tract(S):
     """Split the interleaved TROSY and ANTITROSY datasets of a TRACT experiment.
@@ -16,7 +17,11 @@ def split_tract(S):
     Sa, Sb : Spectrum objects
         The two Spectrum objects containing the TROSY and ANTITROSY datasets, respectively.
     """
-    S.fid = np.reshape(S.fid.flatten(), (2*S.fid.shape[0], -1))
+    version = t1t2ne_utils.fs_version(S)
+    if version == 'topspin3':
+        S.acqus['GRPDLY'] += 1
+    else:
+        S.fid = np.reshape(S.fid.flatten(), (2*S.fid.shape[0], -1))
     Sa = deepcopy(S)
     Sb = deepcopy(S)
     Sa.fid = S.fid[::2]

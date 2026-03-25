@@ -21,7 +21,7 @@ class NSCmd(BaseCommand):
     
     @staticmethod
     def add_arguments(parser):
-        parser.add_argument('--basedir', nargs=1, help='Base directory for the experiment (where the reference spectrum is located)')
+        parser.add_argument('--basedir', type=str, help='Base directory for the experiment (where the reference spectrum is located)')
         parser.add_argument('--tract', type=str, help='expno of the TRACT experiment (used to estimate the SNR). Either this or --hsqc should be provided')
         parser.add_argument('--hsqc', type=str, help='expno of the reference HSQC spectrum (used to estimate the SNR). Either this or --tract should be provided')
         parser.add_argument('--nres', type=int, help='The number of non-proline residues in the protein. If not provided, it will be estimated from the molecular weight.')
@@ -123,6 +123,9 @@ def estimate_snr(CO):
     if CO.hsqc is not None:
         path_hsqc = os.path.join(CO.basedir, f'{CO.hsqcexpno}')
         S_hsqc = kz.Spectrum_2D(path_hsqc)
+        version = t1t2ne_utils.fs_version(S_hsqc)
+        if version == 'topspin3':
+            S_hsqc.acqus['GRPDLY'] += 1
         S_hsqc.procs['wf'][-1]['mode'] = 'em'
         S_hsqc.procs['wf'][-1]['lb'] = 1/S_hsqc.acqus['AQ2']
         S_hsqc.procs['zf'][-1] = 2 * S_hsqc.fid.shape[-1]
@@ -149,6 +152,9 @@ def estimate_snr(CO):
         S = kz.Pseudo_2D(path)
         if not t1t2ne_utils.istract(S):
             raise NameError(f'Experiment {CO.tract} is not a TRACT experiment')
+        version = t1t2ne_utils.fs_version(S_hsqc)
+        if version == 'topspin3':
+            S_hsqc.acqus['GRPDLY'] += 1
         Sa, Sb = split_tract(S)
         if CO.options['phase']:
             Sb.adjph(ref=0)

@@ -124,6 +124,9 @@ def interactive_setup(CO):
         S_ref = kz.Spectrum_1D(path_ref)
     except Exception as e:
         raise RuntimeError(f'Error occurred while loading the reference spectrum: {e}')
+    version = t1t2ne_utils.fs_version(S_ref)
+    if version == 'topspin3':
+        S_ref.acqus['GRPDLY'] += 1
     S_ref.procs['wf']['mode'] = 'em'
     S_ref.procs['wf']['lb'] = 1/S_ref.acqus['AQ']
     print(f'Line broadening applied: {S_ref.procs["wf"]["lb"]:.2g} Hz')
@@ -150,6 +153,8 @@ def interactive_setup(CO):
             S_t1 = kz.Spectrum_1D(path_t1)
         except Exception as e:
             raise RuntimeError(f'Error occurred while loading the T1 spectrum: {e}')
+        if version == 'topspin3':
+            S_t1.acqus['GRPDLY'] += 1
         S_t1.procs['wf']['mode'] = 'em'
         S_t1.procs['wf']['lb'] = 1/S_t1.acqus['AQ']
         S_t1.procs['zf'] = 2 * S_t1.fid.shape[-1]
@@ -222,6 +227,9 @@ def interactive_setup(CO):
         S_ref = kz.Spectrum_1D(path_ref)
     except Exception as e:
         raise RuntimeError(f'Error occurred while loading the reference spectrum: {e}')
+    version = t1t2ne_utils.fs_version(S_ref)
+    if version == 'topspin3':
+        S_ref.acqus['GRPDLY'] += 1
     S_ref.procs['wf']['mode'] = 'em'
     S_ref.procs['wf']['lb'] = 1/S_ref.acqus['AQ']
     print(f'Line broadening applied: {S_ref.procs["wf"]["lb"]:.2g} Hz')
@@ -255,6 +263,8 @@ def interactive_setup(CO):
             S_t2 = kz.Spectrum_1D(path_t2)
         except Exception as e:
             raise RuntimeError(f'Error occurred while loading the T2 spectrum: {e}')
+        if version == 'topspin3':
+            S_t2.acqus['GRPDLY'] += 1
         S_t2.procs['wf']['mode'] = 'em'
         S_t2.procs['wf']['lb'] = 1/S_t2.acqus['AQ']
         S_t2.procs['zf'] = 2 * S_t2.fid.shape[-1]
