@@ -62,9 +62,9 @@ def estimate_snr(CO):
             The order parameters to use for the calculation of tau_c. In IDP mode, two values should be provide, else only one.
         *   tau : list of float
             The correlation times to use for the calculation of tau_c. In IDP mode, two values should be provide, else only one.
-        *   hsqcexpno : str, optional
+        *   hsqc : str, optional
             The experiment number of the HSQC reference spectrum to use for the SNR estimation.
-        *   tractexpno : str, optional
+        *   tract : str, optional
             The experiment number of the TRACT spectrum to use for the SNR estimation. 
         *   T : float, optional
             The temperature in Kelvin, used to recompute tau_c based on temperature.
@@ -121,7 +121,7 @@ def estimate_snr(CO):
 
     #estimate signal to noise ratio. if HSQC is provided, use it. Else, use the TRACT
     if CO.hsqc is not None:
-        path_hsqc = os.path.join(CO.basedir, f'{CO.hsqcexpno}')
+        path_hsqc = os.path.join(CO.basedir, f'{CO.hsqc}')
         S_hsqc = kz.Spectrum_2D(path_hsqc)
         version = t1t2ne_utils.fs_version(S_hsqc)
         if version == 'topspin3':

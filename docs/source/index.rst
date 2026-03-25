@@ -6,5 +6,6 @@ T1T2ne documentation
    :caption: Contents:
 
    installation
+   useguide
    docmodules
 

@@ -24,8 +24,8 @@ def split_tract(S):
         S.fid = np.reshape(S.fid.flatten(), (2*S.fid.shape[0], -1))
     Sa = deepcopy(S)
     Sb = deepcopy(S)
-    Sa.fid = S.fid[::2]
-    Sb.fid = S.fid[1::2]
+    Sb.fid = S.fid[::2]
+    Sa.fid = S.fid[1::2]
     Sa.acqus['TD1'] = Sa.fid.shape[0]
     Sb.acqus['TD1'] = Sb.fid.shape[0]
     return Sa, Sb

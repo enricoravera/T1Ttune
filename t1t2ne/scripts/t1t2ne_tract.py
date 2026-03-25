@@ -514,8 +514,8 @@ def tract_compute_tau(B0, Ra, Rb, sigma_Ra, sigma_Rb, S2=0.9, r=1.02e-10, Deltas
     print('angle theta = {:.2f} degrees'.format(theta*180/np.pi))
     Rb_avg = np.mean(Rb)
     Ra_avg = np.mean(Ra)
-    sigma_Rb_avg = np.std(Rb)
-    sigma_Ra_avg = np.std(Ra)
+    sigma_Rb_avg = np.mean(Rb)
+    sigma_Ra_avg = np.mean(Ra)
     c_avg = np.average(c, weights=c**2/sigma_c**2)  #(Rb_avg - Ra_avg)/(dN*p*(3*np.cos(theta)**2-1))
     sigma_eta_avg = 0.5 * np.sqrt(sigma_Rb_avg**2 + sigma_Ra_avg**2)
     sigma_c_avg = np.abs(dc_deta) * sigma_eta_avg
