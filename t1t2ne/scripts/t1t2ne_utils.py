@@ -747,8 +747,8 @@ class Conf_Optns:
                 example_resource = files('t1t2ne') / 'examples'
                 with as_file(example_resource) as example_path:
                     self.basedir = example_path
-                self.tract = '4'
-                self.hsqc = '11'
+                self.tract = '11'
+                self.hsqc = '4'
                 print(f'Experiment parameters set for internal test environment: basedir={self.basedir}, tract={self.tract}, hsqc={self.hsqc}')
         else:
             if hasattr(self, 'MW') and self.MW is not None:
