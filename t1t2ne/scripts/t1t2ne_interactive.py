@@ -72,7 +72,7 @@ def interactive_setup(CO):
 
     CO.get_B0()
     
-    expectedratio = np.exp(-(1+lambertw(1/np.e))) # maximum reduction achievable with the optimal CPMG block, which is 1+lambertw(1/e) times the T2 time of the system
+    expectedratio = np.real(np.exp(-(1+lambertw(1/np.e)))) # maximum reduction achievable with the optimal CPMG block, which is 1+lambertw(1/e) times the T2 time of the system
 
     if hasattr(CO, 'tau') and CO.tau is not None:
         CO.add_ref('fushman')

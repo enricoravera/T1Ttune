@@ -112,7 +112,7 @@ def suggest_tract_vdlist(CO):
     print(f'Ra:  {Ra:.2f} s^-1')
     print(f'Rb:  {Rb:.2f} s^-1')
 
-    factor = 1 + lambertw(1/np.e)
+    factor = np.real(1 + lambertw(1/np.e))
 
     t_a = factor / Ra
     t_b = factor / Rb
