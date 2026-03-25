@@ -1,4 +1,4 @@
-T1TTUNE_CONFIGURE module
+T1T2ne_CONFIGURE module
 ========================
 
 

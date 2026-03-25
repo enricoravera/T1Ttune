@@ -32,6 +32,8 @@ sed -i "s/__version__ = \"[^\"]*\"/__version__ = \"$version\"/g" ./t1t2ne/__init
 sed -i "s/release = \"[^\"]*\"/release = \"$version\"/g" ./docs/source/conf.py
 #	index.rst
 sed -i "s/\*\*Version\*\*: .*/**Version**: $version/g" ./docs/source/index.rst
+#       pyproject.toml
+sed -i "s/version = \"[^\"]*\"/version = \"$version\"/g" ./pyproject.toml
 
 # Rebuild the package
 echo "Rebuilding t1t2ne version $version..."

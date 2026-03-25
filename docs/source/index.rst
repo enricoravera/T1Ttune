@@ -1,4 +1,4 @@
-T1Ttune documentation
+T1T2ne documentation
 =====================
 
 .. toctree::
