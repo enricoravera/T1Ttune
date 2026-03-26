@@ -37,6 +37,7 @@ exclude_patterns = []
 
 intersphinx_mapping = {
     'numpy': ('https://numpy.org/doc/stable/', None),
+    'klassez': ('https://klassez.readthedocs.io/latest/', None),
 }
 
 autosummary_generate = True
@@ -100,6 +101,7 @@ latex_elements['passoptionstopackages'] = r"""
 
 # Additional stuff for the LaTeX preamble.
 latex_elements['preamble'] = r"""
+   \PassOptionsToPackage{fleqn}{amsmath}
    % Show Parts and Chapters in Table of Contents
    \setcounter{tocdepth}{0}
    % One line per author on title page
