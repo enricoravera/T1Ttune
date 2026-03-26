@@ -69,16 +69,29 @@ For Intrinsically Disordered Proteins, several different motional models have be
     J(\omega) = \frac{2}{5} \left[ S^2_{slow} \frac{\tau_{slow}}{1 + (\omega \tau_{slow})^2} + (1 - S^2_{slow}) S^2_{int} \frac{\tau_{int}}{1 + (\omega \tau_{int})^2} + (1 - S^2_{slow}) (1 - S^2_{int}) \frac{\tau_{fast}}{1 + (\omega \tau_{fast})^2} \right]
 
 For a :sup:`15`\ N-:sup:`1`\ H pair, the relevant interactions are the dipolar coupling and the chemical shielding anisotropy.
-The dipolar coupling is described through the constant :math:`d = \frac{\mu_0 h \gamma_1 \gamma_2}{16 \pi^2 r^3}`, where :math:`\mu_0` is the vacuum permeability, :math:`\gamma_N` and :math:`\gamma_H` are the gyromagnetic ratios of nitrogen and hydrogen, respectively, :math:`\h` is the Planck constant, and :math:`r` is the N-H bond length.
-The chemical shielding anisotropy is described through the constant :math:`c = -\frac{\Delta \sigma \gamma_N}{3}` multiplied by the field :math:`B_0`, where :math:`\Delta \sigma` is the anisotropy of the chemical shielding tensor.
-The relaxation rates :math:`R_1`, :math:`R_2` and NOE enhancement factor :math:`\eta`, given the magnetic field strength :math:`B`, the distance :math:`r` between the nuclei, the types of nuclei :math:`nuc1` and :math:`nuc2`, the CSA value :math:`Deltasigma`, the function to calculate the spectral density :math:`func` and its arguments :math:`f_args`, and an optional :math:`R_{ex}` contribution to :math:`R_2`. The equations are reported by `Fushman`_:
+The dipolar coupling is described through the constants :math:`p` and :math:`\delta`.
+
+.. math:: p = \frac{\mu_0 h \gamma_H \gamma_N}{16 \pi^2 r^3} 
+
+.. math:: \delta = -\frac{\Delta \sigma \gamma_N}{3} 
+    
+ Where:
+
+    -   :math:`\mu_0` is the vacuum permeability in T m/A
+    -   :math:`h` is the Planck constant in J s
+    -   :math:`\gamma_H` is the gyromagnetic ratio of the proton in rad/s/T
+    -   :math:`\gamma_N` is the gyromagnetic ratio of the nitrogen in rad/s/T
+    -   :math:`r` is the distance between the nuclei in meters
+    -   :math:`\Delta \sigma` is the anisotropy of the chemical shielding tensor, which is a dimensionless quantity. For a N-H pair, it is around 160 ppm.
+    
+The relaxation rates :math:`R_1`, :math:`R_2` and NOE enhancement factor :math:`\eta` at a given the magnetic field strength :math:`B` can be calculated as reported by `Fushman`_:
 
 
-.. math:: R_1 = d^2 (J(\omega_H - \omega_X) + 6 J(\omega_H + \omega_X)) + 3 (c^2 B^2 + d^2) J(\omega_X)
+.. math:: R_1 = p^2 (J(\omega_H - \omega_N) + 6 J(\omega_H + \omega_N)) + 3 (\delta^2 B^2 + p^2) J(\omega_N)
 
-.. math:: R_2 = R_{ex} + \frac{1}{2} d^2 (J(\omega_H - \omega_X) + 6 J(\omega_H + \omega_X) + 6 J(\omega_H)) + \frac{1}{2} (c^2 B^2 + d^2) (4 J(0) + 3 J(\omega_X))
+.. math:: R_2 = R_{ex} + \frac{1}{2} p^2 (J(\omega_H - \omega_N) + 6 J(\omega_H + \omega_N) + 6 J(\omega_H)) + \frac{1}{2} (\delta^2 B^2 + p^2) (4 J(0) + 3 J(\omega_N))
 
-.. math:: \eta = 1 - \frac{d^2 \gamma_1}{\gamma_2} \frac{6 J(\omega_H + \omega_X) - J(\omega_H - \omega_X)}{R_1}
+.. math:: \eta = 1 - \frac{p^2 \gamma_H}{\gamma_N} \frac{6 J(\omega_H + \omega_N) - J(\omega_H - \omega_N)}{R_1}
 
 .. note::
 
@@ -89,15 +102,15 @@ Given the computed values of :math:`R_1`, :math:`R_2` and :math:`\eta`, it is po
 The use of the symbol :math:`\eta` is quite unfortunate, as it also indicates the cross-correlated relaxation rates.
 For the cross-correlation between the dipolar coupling and the CSA, the rates are reported by `Salvi`_:
    
-.. math:: \eta_z = \frac{1}{15} P_2(\cos\theta) d c B 6 J(\omega_X)
+.. math:: \eta_z = \frac{1}{15} P_2(\cos\theta) p \delta B 6 J(\omega_X)
 
-.. math:: \eta_{xy} = \frac{1}{15} P_2(\cos\theta) d c B (4 J(0) + 3 J(\omega_X))
+.. math:: \eta_{xy} = \frac{1}{15} P_2(\cos\theta) p \delta B (4 J(0) + 3 J(\omega_X))
 
 where :math:`\theta` is the angle between the dipolar coupling and the CSA tensors, which for a N-H pair is around 17 degrees.
 
 `Goldman`_ noted that:
 
-.. math:: c = \dfrac{\eta_{xy}}{(3 cos^2 \theta - 1) p d} = 4 J(0) + 3 J(\omega_N)
+.. math:: \eta_{red} = \dfrac{\eta_{xy}}{(3 cos^2 \theta - 1) p d} = 4 J(0) + 3 J(\omega_N)
 
 From this relation and from the form of the spectral density function, it is possible to extract the correlation time of the system from the value of :math:`\eta_{xy}`. This is the rationale behind the TRACT experiment (`Lee et al. (2006)`_).
 Recently, `Robson et al. (2021)`_ have provided a closed-form expression to extract the correlation time from the value of :math:`\eta_{xy}` including the possibility to specify a value for the order parameter. The equation is reported in the original paper and is too long to be reproduced here. 
@@ -105,7 +118,7 @@ We note that, while usually not advised, the same reasoning can be applied to ex
 
 .. math::
 
-    S^2_{int} = \frac{c - 4(S^2_{slow} J(0, \tau_{slow}) + (1-S^2_{slow}) J(0, \tau_{fast})) - 3(S^2_{slow} J(\omega_N, \tau_{slow}) + (1-S^2_{slow}) J(\omega_N, \tau_{fast}))}{4(1-S^2_{slow})(J(0, \tau_{int}) - J(0, \tau_{fast})) + 3(1-S^2_{slow})(J(\omega_N, \tau_{int}) - J(\omega_N, \tau_{fast}))}
+    S^2_{int} = \frac{\eta_{red} - 4(S^2_{slow} J(0, \tau_{slow}) + (1-S^2_{slow}) J(0, \tau_{fast})) - 3(S^2_{slow} J(\omega_N, \tau_{slow}) + (1-S^2_{slow}) J(\omega_N, \tau_{fast}))}{4(1-S^2_{slow})(J(0, \tau_{int}) - J(0, \tau_{fast})) + 3(1-S^2_{slow})(J(\omega_N, \tau_{int}) - J(\omega_N, \tau_{fast}))}
 
 This closes the circle and allows to have a more robust estimate of the relaxation times and hence to obtain more meaningful delay lists, which in turn gives better experimental data. 
 

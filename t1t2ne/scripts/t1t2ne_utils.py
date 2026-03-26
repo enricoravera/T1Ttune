@@ -733,26 +733,12 @@ class Conf_Optns:
                 self.hsqc = config_p['EXPERIMENT']['hsqcexpno']
                 print(f'Experiment parameters loaded from config file: basedir={self.basedir}, tract={self.tract}, hsqc={self.hsqc}')
             else:
-                print('No EXPERIMENT section found in config file. Please provide the experiment parameters manually.')
-                self.basedir = input('Please provide the base directory of the experiment: ')
-                self.tract = input('Please provide the experiment number of the TRACT experiment: ')
-                self.hsqc = input('Please provide the experiment number of the reference HSQC spectrum: ')
-        elif os.getlogin() == 'ravera' and socket.gethostname() == 'dual':
-            if hasattr(self, 'MW') and self.MW is not None:
-                self.basedir = None
-                self.tract = None
-                self.hsqc = None
-            elif hasattr(self, 'tau') and self.tau is not None:
-                self.basedir = None
-                self.tract = None
-                self.hsqc = None
-            else:
+                print('No EXPERIMENT section found in config file. Defaulting to the examples folder.')
                 example_resource = files('t1t2ne') / 'examples'
                 with as_file(example_resource) as example_path:
                     self.basedir = example_path
                 self.tract = '11'
                 self.hsqc = '4'
-                print(f'Experiment parameters set for internal test environment: basedir={self.basedir}, tract={self.tract}, hsqc={self.hsqc}')
         else:
             if hasattr(self, 'MW') and self.MW is not None:
                 self.basedir = None
@@ -763,11 +749,34 @@ class Conf_Optns:
                 self.tract = None
                 self.hsqc = None
             else:
-                pass
+                ReadDefault = input('No config file provided. Do you want to read the default experiments from the package? (y/n): ')
+                if ReadDefault.lower() == 'y':
+                    example_resource = files('t1t2ne') / 'examples'
+                    with as_file(example_resource) as example_path:
+                        self.basedir = example_path
+                    self.tract = '11'
+                    self.hsqc = '4'
+                else:
+                    self.basedir = input('Please provide the base directory of the experiment: ')
+                    self.tract = input('Please provide the experiment number of the TRACT experiment: ')
+                    self.hsqc = input('Please provide the experiment number of the reference HSQC spectrum: ')
+        if self.module == 'interactive':
+            self.basedir = None
+            self.tract = None
+            self.hsqc = None
         if hasattr(parser, 'basedir') and parser.basedir is not None:
             self.basedir = parser.basedir
+            if self.module == 'tract':
+                if hasattr(parser, 'tract') and parser.tract is not None:
+                    self.tract = int(parser.tract)
+                else:
+                    raise ValueError('The --tract option must be provided when the --basedir option is used to specify the base directory of the experiment. Please provide it and run the script again.')    
+            if self.module == 'ns':
+                if hasattr(parser, 'hsqc') and parser.hsqc is not None:
+                    self.hsqc = int(parser.hsqc)
+                else:   
+                    raise ValueError('The --hsqc option must be provided when the --basedir option is used to specify the base directory of the experiment. Please provide it and run the script again.')
         if hasattr(parser, 'tract') and parser.tract is not None:
             self.tract = int(parser.tract)
         if hasattr(parser, 'hsqc') and parser.hsqc is not None:
             self.hsqc = int(parser.hsqc)
-        

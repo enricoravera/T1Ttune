@@ -28,10 +28,11 @@ class InteractiveCmd(BaseCommand):
         parser.add_argument('--basedir', type=str, help='The base directory for the experiment. Default is the current directory.')
         parser.add_argument('--xred', nargs='*', help='The xred values to use for the calculation of the lists.')
         parser.add_argument('--S2', nargs='*', help='The Lipari-Szabo order parameter S2 to use for the calculation of tau_c. In IDP mode, two values should be provide, else only one')
+        parser.add_argument('--tau', nargs='*', help='The correlation time tau to use for the calculation. In IDP mode, two values should be provided, else only one.')
         parser.add_argument('--idp', action='store_true', help='Whether to use the IDP model to extract the order parameter S2 instead of tau_c.')
         parser.add_argument('--MW', type=float, help='The molecular weight of the protein in kDa, to be used for estimating the tau_slow in the IDP model. If not specified, will raise an error if --idp is used.')
         parser.add_argument('--corr_window_idp', type=int, default=20, help='To estimate the correlation time of the intermediate motion in the IDP model, a correlation time of a peptide of 20 residues is used by default. This parameter allows to change this value if needed.')
-        parser.add_argument('--T', type=float, default=298.15, help='The temperature in Kelvin, to be used for estimating the tau_slow in the IDP model. Default is 298 K.')
+        parser.add_argument('--T', type=float, default=298.15, help='The temperature in Kelvin, to be used for estimating the taus from MW. Default is 298 K.')
         parser.add_argument('--nT', nargs='*', help='The number of increments in the suggested vdlist. For this module only one value must be provided. Default is 8.')
         parser.add_argument('--r', type=float, default=1.02, help='The length of the 1H-15N bond in Angstroms. Default is 1.02 A.')
         parser.add_argument('--Deltasigma', type=float, default=-160, help='The chemical shift anisotropy of the 15N nucleus in ppm. Default is -160 ppm.')
@@ -109,13 +110,16 @@ def interactive_setup(CO):
     if not info['found'] or not info['spectrometer']:
         textcolor('TopSpin spectrometer installation not found. Please make sure you are running this script on the spectrometer and that TopSpin is properly installed.', 'red', bold=True)
         t1t2ne_utils.the_end(CO) 
-    CO.basedir = input('Please enter the base directory for the experiment (default is current directory): ') or '.'
+    if not hasattr(CO, 'basedir') or CO.basedir is None:
+        CO.basedir = input('Please enter the base directory for the experiment (default is current directory): ') or '.'
+    if not os.path.exists(CO.basedir):
+        raise RuntimeError('The specified base directory does not exist. Please make sure to enter a valid directory.')
     
         
     print('\nStarting the interactive setup of the T1 experiment...')
     d29 = -np.log(CO.T1red)/R1 
     print(f'Acquire the reference spectrum first with d31 = 20u and d29 = {d29:.3f} s.')
-    refno = input('Please enter the reference spectrum number (default is 1): ') or '1'
+    refno = input('Please enter the reference spectrum number (default is 10): ') or '10'
 
     path_ref = os.path.join(CO.basedir, refno)
     if not os.path.exists(path_ref):
@@ -145,7 +149,7 @@ def interactive_setup(CO):
     iteration = 0
     while whilecontrol:
         print(textcolor(f'To achieve a reduction of the signal intensity of about {expectedratio*100:.0f}%, try setting d31 to ' + t1t2ne_utils.f4(T1_30), 'blue'))
-        expno = input('Please enter the experiment number for the T1 experiment once it is done (default is 2): ') or '2'
+        expno = input(f'Please enter the experiment number for the T1 experiment once it is done (default is {refno+iteration+1}): ') or f'{refno+iteration+1}'
         path_t1 = os.path.join(CO.basedir, expno)
         if not os.path.exists(path_t1):
             raise RuntimeError('The specified T1 experiment number does not exist in the base directory. Please make sure to acquire the T1 experiment and enter the correct number.')
@@ -220,7 +224,7 @@ def interactive_setup(CO):
     print(f'Acquire the reference spectrum first with l31 = 0 and l29={l29:d}.')
 
     
-    refno = input('Please enter the reference spectrum number (default is 1): ') or '1'
+    refno = input('Please enter the reference spectrum number (default is 20): ') or '20'
 
     path_ref = os.path.join(CO.basedir, refno)
     if not os.path.exists(path_ref):
@@ -257,7 +261,7 @@ def interactive_setup(CO):
     while whilecontrol:
         T2red_30 = max(1 - np.exp(-R2ave*l1_30*d31*1e-6), T2red_max)
         print(textcolor(f'To achieve a reduction of the signal intensity of about {T2red_30*100:.0f}%, try setting l31 to {l1_30:.0f}', 'blue'))
-        expno = input('Please enter the experiment number for the T2 experiment once it is done (default is 2): ') or '2'
+        expno = input(f'Please enter the experiment number for the T2 experiment once it is done (default is {refno+iteration+1}): ') or f'{refno+iteration+1}'
         path_t2 = os.path.join(CO.basedir, expno)
         if not os.path.exists(path_t2):
             raise RuntimeError('The specified T2 experiment number does not exist in the base directory. Please make sure to acquire the T2 experiment and enter the correct number.')
