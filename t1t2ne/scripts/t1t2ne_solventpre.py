@@ -7,6 +7,7 @@ from .textcolor import textcolor
 from . import t1t2ne_utils, f_ParaMeters_relax
 import klassez as kz
 import random
+from scipy.special import lambertw
 
 class SPREListsCmd(BaseCommand):
     SHORT_HELP = "Setup the time increment for solvent PRE experiments"
@@ -18,7 +19,7 @@ class SPREListsCmd(BaseCommand):
     def add_arguments(parser):
         parser.add_argument('--MW', type=float, help='The molecular weight of the protein in kDa, to be used for estimating the linewidth.')
         parser.add_argument('--lw', type=float, default=10, help='The expected linewidth in Hz, to be used for estimating the tau_slow in the IDP model. Default is 10 Hz.')
-        parser.add_argument('--T1', type=float, default=1, help='The expected T1 in seconds, to be used for estimating the tau_slow in the IDP model. If not provided, it will be estimated from the molecular weight if provided, otherwise a default value of 1 s will be used.')
+        parser.add_argument('--T1', type=float, default=1, help='The expected intrinsic T1 in seconds.')
         parser.add_argument('--T', type=float, help='The Temperature in Kelvin')
         parser.add_argument('--nT', nargs='*', help='The number of increments in the suggested vdlist. For this module only one value must be provided. Default is 8.')
         parser.add_argument('--r', type=float, default=3.6, help='The distance of closest approach in Angstroms. Default is 3.6e-10 m, corresponding to the sum of the ionic radius of Gd^3+ and the van der Waals radius of water.')
@@ -110,7 +111,28 @@ def solventpre(CO):
     R2 = Gamma2 + amidelinewidth/np.pi
     print(textcolor(f"\nEstimated R1 at the closest approach distance: {R1:.2f} s^-1", "blue"))
     print(textcolor(f"Estimated R2 at the closest approach distance: {R2:.2f} s^-1", "blue"))
-    vdlist_PRE = np.geomspace(2e-5, 2/R1, num=nT1) #geometrically spaced list from 20us to 2*tau_average
+    
+    factor = np.real(1 + lambertw(1/np.e))
+
+    t_1 = factor / R1
+    t_2 = factor / R2
+    
+    # Time range
+    t_1_min = 2e-5
+    t_1_max = 2 * t_1
+    
+    # Logarithmically spaced grid (covers both fast and slow scales)
+    log_times = np.logspace(np.log10(t_1_min), np.log10(t_1_max), nT1)
+    
+    # Force the two exact optimal points into the grid
+    # (this guarantees the schedule "touches" the FIM-optimal locations)
+    idx_a = np.argmin(np.abs(log_times - t_1))
+    
+    log_times[idx_a] = t_1
+    
+    # Return sorted distinct times
+    vdlist_PRE = np.sort(log_times)
+    
     if CO.options['randomize']:
         random.shuffle(vdlist_PRE)
     print(textcolor('\nSuggested vdlist for T1 experiment:', 'blue'))
@@ -119,7 +141,12 @@ def solventpre(CO):
     if nT2 == 2:
         print(textcolor(f"Optimal Tb-Ta difference for optimizing Gamma2 measurement: {1.15/(R2):.5f} s", "blue"))
     else:
-        vdlist_PRE_R2 = np.geomspace(2e-5, 2/(R2), num=nT2)
+        t_2_min = 2e-5
+        t_2_max = 2 * t_2
+        log_times = np.logspace(np.log10(t_2_min), np.log10(t_2_max), nT2)
+        idx_b = np.argmin(np.abs(log_times - t_2))
+        log_times[idx_b] = t_2
+        vdlist_PRE_R2 = np.sort(log_times)
         if CO.options['randomize']:
             random.shuffle(vdlist_PRE_R2)
         print(textcolor('\nSuggested vdlist for R2 experiment:', 'blue'))

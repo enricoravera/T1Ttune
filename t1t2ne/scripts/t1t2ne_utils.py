@@ -463,7 +463,10 @@ class Conf_Optns:
                 if self.T != 298.15:
                     self.tau[0] = hydrodynamics_utils.recompute_tau(self.tau[0], self.T)
             if len(self.tau) == 1:
-                self.tau.append((self.MWi * 0.5998 + 0.1674) * 1e-9 if hasattr(self, 'MWi') else 1.6e-9) # default value for the correlation time of the intermediate motion in the IDP model is 1.6 ns
+                taui = (self.MWi * 0.5998 + 0.1674) * 1e-9 if hasattr(self, 'MWi') else 1.6e-9
+                if self.T != 298.15:
+                    taui = hydrodynamics_utils.recompute_tau(taui, self.T)
+                self.tau.append(taui) # default value for the correlation time of the intermediate motion in the IDP model is 1.6 ns
                 self.add_ref('rezaei-ghaleh')
         if hasattr(self, 'tau'):
             self.tau.append(1e-11) # the fast motion is always set to 10 ps.

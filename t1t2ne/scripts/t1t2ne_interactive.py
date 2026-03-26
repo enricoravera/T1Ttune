@@ -37,7 +37,7 @@ class InteractiveCmd(BaseCommand):
         parser.add_argument('--Deltasigma', type=float, default=-160, help='The chemical shift anisotropy of the 15N nucleus in ppm. Default is -160 ppm.')
         parser.add_argument('--theta', type=float, default=17, help='The angle between the 1H-15N bond and the principal axis of the CSA tensor in degrees. Default is 17 degrees.')
         parser.add_argument('--B0', nargs='*', help='The magnetic field strength in Tesla. If not provided, the script will try to load it from the config file. If it is not found in the config file, an error will be raised.')
-        parser.add_argument('--Larmor', type=float, help='The Larmor frequency of the nucleus in MHz. If not provided, the script will try to load it from the config file. If it is not found in the config file, an error will be raised.')
+        parser.add_argument('--Larmor', nargs=1, type=float, help='The Larmor frequency of the nucleus in MHz. If not provided, the script will try to load it from the config file. If it is not found in the config file, an error will be raised.')
         parser.add_argument('--logscale', action='store_true', help='Whether to use a logarithmic scale for the vdlist and vclist. Default is False, which means a linear scale will be used.')
         parser.add_argument('--nucs', nargs='*', default=['1H', '15N'], help='The nuclei to use for the calculation of the relaxation rates. Default is 1H and 15N.')
         parser.add_argument('--large', action='store_true', help='Whether to create the lists for the "large" sequence, which is optimized for short T2 times. If True, the d21 value is set to 450 us and only 8 cycles per CPMG block are used instead of 16. Default is False.')
@@ -175,7 +175,7 @@ def interactive_setup(CO):
             whilecontrol = False
         iteration += 1
     print(textcolor(f'Convergence achieved for T1 estimation. Estimated $R1_{{ave}}$ is {R1_ave:.2f} s.', 'green'))
-    print(textcolor(f'Set the recovery delay for the hetnOe experiment to at least {6/R1_ave:.3f}.\n', 'blue', bold=False))       
+    print(textcolor(f'Set the recovery delay for the hetnOe experiment in the range {4/R1_ave:.3f} - {6/R1_ave:.3f}.\n', 'blue', bold=False))       
     T1max = -np.log(CO.T1red)/R1_ave
     if logscale:
         vdlist_T1 = [2e-5 - 1/R1_ave * np.log(1-(1-CO.T1red)*i/(nT1-1)) for i in range(nT1)] #logarithmically spaced list from 20u to to T1max
@@ -212,9 +212,11 @@ def interactive_setup(CO):
     d31 = (p30*16+d21*32)
     if CO.options['large']:
         d31 = d31/2
-    l29 = int(T1_30/(d31*1e-6))
-    l31_hl = int(0.250/(d31*1e-6))
     T2red_max = 1 - np.exp(-R2*0.250)
+    T2_30 = min(T2_30, 0.250)
+    l29 = int(T2_30/(d31*1e-6))
+    l31_hl = int(0.250/(d31*1e-6))
+
     print(f'Acquire the reference spectrum first with l31 = 0 and l29={l29:d}.')
 
     

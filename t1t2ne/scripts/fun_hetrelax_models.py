@@ -217,6 +217,14 @@ def J_Freed(w, d, D_target, D_cosolute, tau_1=1e-9, tau_2=None):
     Freed spectral density function for outer sphere relaxation. Equations 6.42, 6.48 and 6.50 in `Bertini et al. 2016`_.
  
     .. _Bertini et al. 2016: https://www.sciencedirect.com/science/chapter/monograph/pii/B9780444634368000065
+    
+    .. math::
+    
+        \tau_D = \frac{d^2}{D_{target} + D_{cosolute}}
+        z = \sqrt{2 |\omega| \tau_D + \frac{\tau_D}{\tau_1}}
+        J(\omega) = \frac{2}{5} \frac{1 + \frac{5 z}{8} + \frac{z^2}{8}}{1 + z + \frac{z^2}{2} + \frac{z^3}{6} + \frac{4 z^4}{81} + \frac{z^5}{81} + \frac{z^6}{648}}
+        
+    
 
     Parameters
     -----------
