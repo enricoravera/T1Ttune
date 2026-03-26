@@ -1,0 +1,148 @@
+/data/home/ravera/miniconda3/bin/python: No module named build.__main__; 'build' is a package and cannot be directly executed
+<unknown>:239: SyntaxWarning: invalid escape sequence '\D'
+<unknown>:379: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:2: SyntaxWarning: invalid escape sequence '\p'
+<unknown>:2: SyntaxWarning: invalid escape sequence '\D'
+<unknown>:216: SyntaxWarning: invalid escape sequence '\s'
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:203: UserWarning: potentially wrong underline length... 
+Returns 
+-------- in 
+General function to calculate the spectral density J using a given J_func. Supports:
+- Isotropic Lipari-Szabo: J_func = :func:`LS_iso`, f_args = (S2s, taus)... in the docstring of J in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  while not self._is_at_section() and not self._doc.eof():
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of J in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+<unknown>:2: SyntaxWarning: invalid escape sequence '\s'
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:203: UserWarning: potentially wrong underline length... 
+Parameters 
+----------- in 
+Freed spectral density function for outer sphere relaxation. Equations 6.42, 6.48 and 6.50 in `Bertini et al. 2016`_.
+... in the docstring of J_Freed in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  while not self._is_at_section() and not self._doc.eof():
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:203: UserWarning: potentially wrong underline length... 
+Returns 
+-------- in 
+Freed spectral density function for outer sphere relaxation. Equations 6.42, 6.48 and 6.50 in `Bertini et al. 2016`_.
+... in the docstring of J_Freed in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  while not self._is_at_section() and not self._doc.eof():
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of J_omega_tau_aniso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of J_omega_tau_aniso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of J_omega_tau_iso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of J_omega_tau_iso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of LS_aniso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of LS_aniso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of LS_iso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of LS_iso in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of R1R2nOe in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of R1R2nOe in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of c in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of c in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of d in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of d in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of eta_z_eta_xy in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of eta_z_eta_xy in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of omega in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of omega in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of recompute_tau in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/hydrodynamics_utils.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of recompute_tau in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/hydrodynamics_utils.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Parameters: in the docstring of water_viscosity in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/hydrodynamics_utils.py.
+  self[section] = content
+/data/home/ravera/miniconda3/lib/python3.13/site-packages/numpydoc/docscrape.py:420: UserWarning: Unknown section Returns: in the docstring of water_viscosity in /data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/hydrodynamics_utils.py.
+  self[section] = content
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.OuterSphere:6: WARNING: Literal block ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.OuterSphere:10: ERROR: Unexpected indentation. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.OuterSphere:12: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.OuterSphere:18: WARNING: Literal block ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.OuterSphere:21: ERROR: Unexpected indentation. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.OuterSphere:22: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.transient_zfs:6: WARNING: Literal block ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.transient_zfs:9: ERROR: Unexpected indentation. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/f_ParaMeters_relax.py:docstring of t1t2ne.scripts.f_ParaMeters_relax.transient_zfs:10: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py:docstring of t1t2ne.scripts.fun_hetrelax_models.J_Freed:9: WARNING: Explicit markup ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py:docstring of t1t2ne.scripts.fun_hetrelax_models.J_Freed:13: WARNING: Definition list ends without a blank line; unexpected unindent. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/t1t2ne/scripts/fun_hetrelax_models.py:docstring of t1t2ne.scripts.fun_hetrelax_models.J_Freed:10: ERROR: Undefined substitution referenced: "omega". [docutils]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/useguide.rst:17: WARNING: Inline interpreted text or phrase reference start-string without end-string. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/useguide.rst:21: WARNING: Inline interpreted text or phrase reference start-string without end-string. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/useguide.rst:22: WARNING: Inline interpreted text or phrase reference start-string without end-string. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/useguide.rst:127: WARNING: Inline interpreted text or phrase reference start-string without end-string. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/useguide.rst:152: WARNING: Inline interpreted text or phrase reference start-string without end-string. [docutils]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/__init__.rst: WARNING: document isn't included in any toctree [toc.not_included]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/base.rst: WARNING: document isn't included in any toctree [toc.not_included]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/create_registry.rst: WARNING: document isn't included in any toctree [toc.not_included]
+/data_old/NMR/HetRelax/t1tune_main/docs/source/textcolor.rst: WARNING: document isn't included in any toctree [toc.not_included]
+Rc files read:
+  /etc/LatexMk
+  ./latexmkrc
+Latexmk: This is Latexmk, John Collins, 29 September 2020, version: 4.70b.
+Rule 'pdflatex': The following rules & subrules became out-of-date:
+      'pdflatex'
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex   -recorder  "t1t2ne.tex"'
+------------
+make[1]: *** Deleting file 't1t2ne.pdf'
+Traceback (most recent call last):
+  File "/data/home/ravera/miniconda3/lib/python3.13/subprocess.py", line 1276, in wait
+    return self._wait(timeout=timeout)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/home/ravera/miniconda3/lib/python3.13/subprocess.py", line 2068, in _wait
+    (pid, sts) = self._try_wait(0)
+                 ~~~~~~~~~~~~~~^^^
+  File "/data/home/ravera/miniconda3/lib/python3.13/subprocess.py", line 2026, in _try_wait
+    (pid, sts) = os.waitpid(self.pid, wait_flags)
+                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/home/ravera/miniconda3/bin/sphinx-build", line 8, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/data/home/ravera/miniconda3/lib/python3.13/site-packages/sphinx/cmd/build.py", line 491, in main
+    return make_mode.run_make_mode(argv[1:])
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/data/home/ravera/miniconda3/lib/python3.13/site-packages/sphinx/cmd/make_mode.py", line 222, in run_make_mode
+    return getattr(make, run_method)()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/data/home/ravera/miniconda3/lib/python3.13/site-packages/sphinx/cmd/make_mode.py", line 145, in build_latexpdf
+    returncode = subprocess.call([makecmd, 'all-pdf'])
+  File "/data/home/ravera/miniconda3/lib/python3.13/subprocess.py", line 399, in call
+    return p.wait(timeout=timeout)
+           ~~~~~~^^^^^^^^^^^^^^^^^
+  File "/data/home/ravera/miniconda3/lib/python3.13/subprocess.py", line 1289, in wait
+    self._wait(timeout=sigint_timeout)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/home/ravera/miniconda3/lib/python3.13/subprocess.py", line 2062, in _wait
+    time.sleep(delay)
+    ~~~~~~~~~~^^^^^^^
+KeyboardInterrupt
+make: *** [Makefile:20: latexpdf] Interrupt
+Latexmk: Index file 't1t2ne.idx' was written
+Collected error summary (may duplicate other messages):
+  pdflatex: Command for 'pdflatex' gave return code 0.0078125
+      Refer to 't1t2ne.log' for details
+Latexmk: Use the -f option to force complete processing,
+ unless error was exceeding maximum runs, or warnings treated as errors.

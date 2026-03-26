@@ -14,12 +14,12 @@ To get more information on a specific subcommand, you can run:
 
 The following subcommands are available:
 
--   ``interactive``: an interactive command line tools that guides the user through the selection of the appropriate parameters for :math:`^{15}`N relaxation measurements.
+-   ``interactive``: an interactive command line tools that guides the user through the selection of the appropriate parameters for :math:`^{15}` N relaxation measurements.
 -   ``ns``: a command line tool to estimate the number of scans required for a given experiment, starting from an HSQC experiment.
 -   ``setuptract``: a command line tool to set up a TRACT experiment on the spectrometer, providing the appropriate delay list based on the correlation time or molecular weight.
 -   ``tract``: a command line tool to fit a TRACT experiment and extract the average correlation time of the system.
--   ``makelists``: a command line tool to generate the lists for running :math:`^{15}`N T1 and T2 relaxation experiments given the correlation times or the molecular weight.
--   ``solventpre``: a command line tool to generate the lists for running :math:`^{1}`H T1 and T2 solvent PRE experiments.
+-   ``makelists``: a command line tool to generate the lists for running :math:`^{15}` N T1 and T2 relaxation experiments given the correlation times or the molecular weight.
+-   ``solventpre``: a command line tool to generate the lists for running :math:`^{1}` H T1 and T2 solvent PRE experiments.
 
 The ``interactive`` subcommand
 ******************************
@@ -149,7 +149,7 @@ By default, lists are generated with linear spacing, however, logarithmic spacin
 The ``solventpre`` subcommand
 *****************************
 
-This subcommand generates the lists for running :math:`^1`H T1 and T2 solvent PRE experiments. The expected relaxation rates are computed with the Freed Outer Sphere model. 
+This subcommand generates the lists for running :math:`^1` H T1 and T2 solvent PRE experiments. The expected relaxation rates are computed with the Freed Outer Sphere model. 
 In this model, the spectral density function is computed as:
 
 .. math::

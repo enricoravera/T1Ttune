@@ -238,9 +238,10 @@ def SBM(r, B, taue=1e-9, taur=1e-9, tau_M=np.inf, S=0.5, tauv=None, deltat=None,
 def transient_zfs(deltat, B, tauv, S):
     """
     Calculate the transient zero-field splitting (ZFS) contributions to the electron relaxation rates T1e and T2e using the Bloembergen-Morgan model:
+    
     .. math::
     
-        R_{1e} = \frac{2}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(J(\omega_e) + 2J(2\omega_e)\right)
+        R_{1e} = \frac{2}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(J(\omega_e) + 2J(2\omega_e)\right) \breqn
         R_{2e} = \frac{1}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(3J(0) + 5J(\omega_e) + J(2\omega_e)\right)
     
     Parameters
@@ -378,16 +379,18 @@ def rotational_taue(g, B, tauv, A=None, I=None):
 def OuterSphere(B, c=1, d=3.6e-10, D_target = 1e-10, D_cosolute = 2.6e-10, f=0.5, taue=1e-9, tauv=2.6e-11, deltat=0.014, AMe=None, I=None, g=None, S=3.5, nuc='1H'):
     """
     Calculate the outer sphere relaxation rates R1 and R2 using the Freed model:
+
     .. math:: 
     
-        k_{outer} = \frac{16\pi}{81} \left( \frac{\mu_0}{4\pi} \right)^2 h^2 \gamma_n^2 \gamma_e^2 S(S+1) N_A f \frac{c}{d(D_{target}+D_{cosolute})}
-        R_1 = k_{outer} [7 J_{outer} (\omega_S) + 3 J_{outer} (\omega_I)]
+        k_{outer} = \frac{16\pi}{81} \left( \frac{\mu_0}{4\pi} \right)^2 h^2 \gamma_n^2 \gamma_e^2 S(S+1) N_A f \frac{c}{d(D_{target}+D_{cosolute})}\breqn
+        R_1 = k_{outer} [7 J_{outer} (\omega_S) + 3 J_{outer} (\omega_I)]\breqn
         R_2 = \frac{1}{2} k_{outer} [13 J_{outer} (\omega_S) + 3 J_{outer} (\omega_I) + 4 J_{outer} (0)]
         
     Optionally, the transient zero-field splitting (ZFS) contribution to electron relaxation is included with the Bloembergen-Morgan model:
+
     .. math::
     
-        R_{1e} = \frac{2}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(J(\omega_e) + 2J(2\omega_e)\right)
+        R_{1e} = \frac{2}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(J(\omega_e) + 2J(2\omega_e)\right)\breqn
         R_{2e} = \frac{1}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(3J(0) + 5J(\omega_e) + J(2\omega_e)\right)
     
     Default values are for 1 mM Gd-DOTA and a protein of 10 kDa at room temperature. Values for Gd-DOTA are taken from `Li et al. 2002`_.
