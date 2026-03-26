@@ -154,8 +154,8 @@ In this model, the spectral density function is computed as:
 
 .. math::
 
-    \tau_D = \frac{d^2}{D_{target} + D_{cosolute}} \breqn
-    z = \sqrt{2 |\omega| \tau_D + \frac{\tau_D}{\tau_1}} \breqn
+    \tau_D = \frac{d^2}{D_{target} + D_{cosolute}} \\
+    z = \sqrt{2 |\omega| \tau_D + \frac{\tau_D}{\tau_1}} \\
     J_{outer}(\omega) = \frac{2}{5} \frac{1 + \frac{5 z}{8} + \frac{z^2}{8}}{1 + z + \frac{z^2}{2} + \frac{z^3}{6} + \frac{4 z^4}{81} + \frac{z^5}{81} + \frac{z^6}{648}}
         
 where: 
@@ -176,8 +176,8 @@ This spectral density function is then used to compute the expected PRE rates, w
 
 .. math:: 
 
-    k_{outer} = \frac{16\pi}{81} \left( \frac{\mu_0}{4\pi} \right)^2 h^2 \gamma_n^2 \gamma_e^2 S(S+1) f N_A \frac{c}{d(D_{target}+D_{cosolute})}\breqn
-    R_1 = k_{outer} [7 J_{outer} (\omega_S) + 3 J_{outer} (\omega_I)]\breqn
+    k_{outer} = \frac{16\pi}{81} \left( \frac{\mu_0}{4\pi} \right)^2 h^2 \gamma_n^2 \gamma_e^2 S(S+1) f N_A \frac{c}{d(D_{target}+D_{cosolute})}\\
+    R_1 = k_{outer} [7 J_{outer} (\omega_S) + 3 J_{outer} (\omega_I)]\\
     R_2 = \frac{1}{2} k_{outer} [13 J_{outer} (\omega_S) + 3 J_{outer} (\omega_I) + 4 J_{outer} (0)]
 
 Where:
@@ -194,7 +194,7 @@ Optionally, the transient zero-field splitting (ZFS) contribution to electron re
 
 .. math::
 
-    R_{1e} = \frac{2}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(J(\omega_e) + 2J(2\omega_e)\right)\breqn
+    R_{1e} = \frac{2}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(J(\omega_e) + 2J(2\omega_e)\right)\\
     R_{2e} = \frac{1}{15} \Delta_t^2 \left(4S(S+1) - 3\right) \left(3J(0) + 5J(\omega_e) + J(2\omega_e)\right)
 
 Where:
