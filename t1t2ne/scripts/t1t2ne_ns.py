@@ -99,19 +99,19 @@ def estimate_snr(CO):
         nres = CO.nres
     else:
         nres = np.rint(MW/0.110)*(0.937) #average mass of an amino acid is 110 Da, and we multiply by 0.937 to account for the fact that prolines do not have an amide proton and therefore do not contribute to the signal in the HSQC spectrum. This is a rough estimate, but it should be sufficient for our purposes.
-    
-    if CO.options['idp']:
-        tau_slow = CO.tau[0]
-        tau_int = CO.tau[1]
-        S2_slow = CO.S2[0]
-        S2_int = CO.S2[1]
-        CO.add_ref('rezaei-ghaleh')
-        CO.add_ref('salvi')
-        CO.add_ref('parigi2000')
-        tau_average = S2_slow*tau_slow + S2_int*tau_int
-    else:
-        tau_average = CO.tau[0]
-    if not hasattr(CO, 'lw') or CO.lw is None:
+
+    if not hasattr(CO, 'lw') or CO.lw is None:    
+        if CO.options['idp']:
+            tau_slow = CO.tau[0]
+            tau_int = CO.tau[1]
+            S2_slow = CO.S2[0]
+            S2_int = CO.S2[1]
+            CO.add_ref('rezaei-ghaleh')
+            CO.add_ref('salvi')
+            CO.add_ref('parigi2000')
+            tau_average = S2_slow*tau_slow + S2_int*tau_int
+        else:
+            tau_average = CO.tau[0]
         R2H = tau_average*7.42e9 
         CO.add_ref('bermel')
         amidelinewidth = R2H/(np.pi)    
